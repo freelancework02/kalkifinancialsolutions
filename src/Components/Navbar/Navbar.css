@@ -1,0 +1,122 @@
+/* Theme: Kalki Financial Solutions — Blue / Navy / Charcoal */
+:root {
+  --wp-bg-top: #ffffff;
+  --wp-bg-scrolled: rgba(255, 255, 255, 0.96);
+
+  /* Primary colors based on logo */
+  --wp-text: #002B55;        /* Deep navy */
+  --wp-muted: #333333;       /* Charcoal grey */
+  --wp-accent: #1976D2;      /* Primary blue */
+  --wp-accent-600: #0F56A4;  /* Slightly darker blue */
+
+  --wp-underline: rgba(25, 118, 210, 0.35); /* Blue underline hover */
+  --wp-shadow: 0 6px 20px rgba(0, 43, 85, 0.08);
+}
+
+/* Header surfaces */
+.navbar-root--light {
+  color: var(--wp-text);
+  -webkit-backdrop-filter: saturate(160%) blur(6px);
+  backdrop-filter: saturate(160%) blur(6px);
+}
+.navbar--top {
+  background: var(--wp-bg-top);
+  border-bottom: 1px solid rgba(0, 43, 85, 0.06);
+}
+.navbar--scrolled {
+  background: var(--wp-bg-scrolled);
+  border-bottom: 1px solid rgba(0, 43, 85, 0.12);
+  box-shadow: var(--wp-shadow);
+}
+
+/* Drawer surface */
+.drawer-surface--light {
+  background: #ffffff;
+}
+
+/* Logo sizing */
+.logo {
+  height: 140px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 200ms ease, height 200ms ease, opacity 200ms ease;
+}
+.logo--lg {
+  height: 130px;
+}
+.logo--sm {
+  height: 70px;
+  transform: translateY(-1px);
+}
+
+/* Wordmark */
+.brand-wordmark--dark {
+  color: var(--wp-text);
+  font-weight: 600;
+}
+
+
+
+/* Links */
+.nav-link--light {
+  color: var(--wp-muted);
+  text-decoration: none;
+  transition: color 160ms ease, background 160ms ease;
+  position: relative;
+}
+.nav-link--light:hover {
+  color: var(--wp-accent);
+ 
+}
+.nav-link--active {
+  color: var(--wp-accent);
+  font-weight: 600;
+}
+
+/* Underline (desktop) */
+.nav-underline--light {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
+  height: 2px;
+  background: transparent;
+  border-radius: 999px;
+  transition: background 160ms ease, transform 160ms ease, opacity 160ms ease;
+  opacity: 0;
+  transform: scaleX(0.6);
+}
+.nav-link--light:hover .nav-underline--light {
+  background: var(--wp-underline);
+  opacity: 1;
+  transform: scaleX(1);
+}
+.nav-link--active .nav-underline--light {
+  background: linear-gradient(90deg, var(--wp-accent), var(--wp-accent-600));
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Mobile tap targets */
+.nav-link--light.mobile {
+  padding: 14px 20px;
+}
+
+/* Drawer Footer links */
+.drawer-footer a {
+  color: var(--wp-text);
+  border-radius: 10px;
+}
+.drawer-footer a:hover {
+  background: rgba(25, 118, 210, 0.10);
+  color: var(--wp-accent);
+}
+
+/* Focus rings (accessibility) */
+.nav-link--light:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(25, 118, 210, 0.45);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
