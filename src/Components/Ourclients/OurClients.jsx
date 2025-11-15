@@ -56,75 +56,110 @@ const clients = [
 ];
 
 export default function OurClients() {
-  // brand colors (used inline where Tailwind needs a precise gradient)
-  const accentFrom = "#f37021"; // orange
-  const accentTo = "#d95800"; // dark orange
-  const deep = "#0f0f0f"; // black
+  const bluePrimary = "#1e40af";
+  const blueLight = "#dbeafe";
+  const blueDark = "#1e3a8a";
+  const black = "#0f0f0f";
+  const white = "#ffffff";
 
   return (
     <section
-      className="py-12"
+      className="py-20 lg:py-28 relative overflow-hidden"
       style={{
-        background:
-          "linear-gradient(180deg, #ffffff 0%, #fff6f0 50%, #ffffff 100%)",
+        background: "linear-gradient(135deg, #ffffff 0%, #f8faff 50%, #ffffff 100%)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="mb-8 text-center">
-          <h2
-            className="text-2xl md:text-3xl font-semibold mb-2"
-            style={{ color: deep }}
-          >
-            Elite Product Providers & Affiliated Companies
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-20 h-20 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
+        <div className="absolute bottom-20 right-20 w-32 h-32 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/80 backdrop-blur-sm border shadow-lg mb-8"
+            style={{ borderColor: "rgba(30, 64, 175, 0.15)" }}>
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
+            <span className="text-sm font-bold tracking-widest uppercase" style={{ color: bluePrimary }}>
+              Trusted Partnerships
+            </span>
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight" style={{ color: black }}>
+            Our <span style={{ color: bluePrimary }}>Partners</span>
           </h2>
-          <p className="text-sm text-black/60 max-w-2xl mx-auto">
+
+          <div className="w-24 h-1.5 mx-auto mb-6 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
+
+          <p className="text-xl opacity-80 max-w-3xl mx-auto" style={{ color: black }}>
+            Elite Product Providers & Affiliated Companies
+          </p>
+          <p className="text-lg opacity-70 mt-3 max-w-2xl mx-auto" style={{ color: black }}>
             Trusted partners we collaborate with to deliver tailored financial solutions.
           </p>
-        </header>
+        </div>
 
-        <div className="bg-white rounded-2xl p-6 md:p-8 border border-black/5 shadow-sm">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
+        {/* Main Grid */}
+        <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 border-2 shadow-2xl"
+          style={{
+            borderColor: "rgba(30, 64, 175, 0.08)",
+            boxShadow: "0 25px 50px -12px rgba(30, 64, 175, 0.15)"
+          }}>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center">
             {clients.map((client) => (
               <div
                 key={client.id}
-                className="flex items-center justify-center w-28 h-20 md:w-32 md:h-24 p-2 rounded-md transition-transform transform hover:-translate-y-1 focus-within:scale-105"
+                className="group relative flex items-center justify-center w-full aspect-[4/3] p-4 rounded-2xl transition-all duration-500 hover:scale-105 focus-within:scale-105"
                 tabIndex={0}
                 aria-label={client.alt}
                 style={{
-                  background: "transparent",
+                  background: "linear-gradient(145deg, #ffffff, #f8faff)",
+                  boxShadow: "0 4px 20px rgba(30, 64, 175, 0.08), 0 2px 8px rgba(30, 64, 175, 0.04)"
                 }}
               >
-                <div
-                  className="w-full h-full flex items-center justify-center rounded-md p-2"
+                {/* Hover Effect */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
-                    borderRadius: 8,
-                    transition: "box-shadow .18s ease, border-color .18s ease",
+                    background: `linear-gradient(145deg, ${blueLight}, #ffffff)`,
+                    boxShadow: "0 8px 32px rgba(30, 64, 175, 0.12)"
                   }}
-                >
+                ></div>
+
+                {/* Logo Container */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center p-3">
                   <img
                     src={client.src}
                     alt={client.alt}
-                    className="max-h-full max-w-full object-contain"
-                    style={{
-                      filter: "var(--logo-filter, none)",
-                      // subtle focus ring via inline style when keyboard-focused is handled by focus-visible classes (Tailwind)
-                    }}
+                    className="max-h-full max-w-full object-contain transition-all duration-500 group-hover:scale-110"
+                    loading="lazy"
                   />
+                </div>
+
+                {/* Tooltip on Hover */}
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-20">
+                  <div className="bg-black text-white text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap">
+                    {client.alt}
+                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-black rotate-45"></div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Decorative bottom accent */}
-          <div className="mt-8 flex items-center justify-center">
-            <div
-              className="h-1 rounded-full"
-              style={{
-                width: 220,
-                background: `linear-gradient(90deg, ${accentFrom}, ${accentTo})`,
-                boxShadow: "0 8px 30px rgba(217,88,0,0.12)",
-              }}
-            />
+          {/* Bottom Accent */}
+          <div className="mt-12 flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-sm font-semibold tracking-widest uppercase mb-4 opacity-70" style={{ color: black }}>
+                KALKI FINANCIAL SOLUTIONS
+              </p>
+              <div className="h-1.5 rounded-full w-48 mx-auto opacity-80"
+                style={{ backgroundColor: bluePrimary }}>
+              </div>
+            </div>
           </div>
         </div>
       </div>

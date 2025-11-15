@@ -1,48 +1,43 @@
-// FoundationalCommitments.VariantA.jsx
+// FoundationalCommitments.TrustGreen.jsx
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronDown, Mail, HelpCircle } from "lucide-react";
+import { ChevronRight, Mail, CheckCircle, Shield, Target, Clock } from "lucide-react";
 import faqimg from "../../assets/faqimg.jpg";
 
 const commitmentsData = [
   {
-    title:
-      "Is it possible to engage a financial advisor if I don't have a substantial amount of disposable income?",
-    content:
-      "Yes, everyone can benefit from financial advising. We help you make confident financial decisions — regardless of your income level.",
+    title: "Is it possible to engage a financial advisor if I don't have a substantial amount of disposable income?",
+    content: "Yes, everyone can benefit from financial advising. We help you make confident financial decisions — regardless of your income level.",
   },
   {
     title: "Can you help make my investments more secure?",
-    content:
-      "We work with you to balance risk and reward, ensuring your investments support your long-term goals.",
+    content: "We work with you to balance risk and reward, ensuring your investments support your long-term goals.",
   },
   {
     title: "Could you please review my portfolio?",
-    content:
-      "Regular portfolio reviews keep your financial direction aligned. We conduct a full Financial Needs Analysis for your entire portfolio.",
+    content: "Regular portfolio reviews keep your financial direction aligned. We conduct a full Financial Needs Analysis for your entire portfolio.",
   },
   {
     title: "What kind of kids' education plans do you offer?",
-    content:
-      "We estimate future education costs and recommend personalized financial products to match your family's goals.",
+    content: "We estimate future education costs and recommend personalized financial products to match your family's goals.",
   },
   {
     title: "Do you provide assistance with life insurance?",
-    content:
-      "Life insurance is essential for long-term family security, asset protection, and estate planning — and we guide you through it all.",
+    content: "Life insurance is essential for long-term family security, asset protection, and estate planning — and we guide you through it all.",
   },
 ];
 
-export default function FoundationalCommitmentsVariantA() {
+export default function FoundationalCommitmentsTrustGreen() {
   const [open, setOpen] = useState(null);
-  const orange = "#f37021";
-  const orangeSoft = "rgba(243,112,33,0.08)";
-  const black = "#0f0f0f";
+  // Trust-focused green colors
+  const primaryGreen = "#059669";    // Professional green
+  const darkGreen = "#047857";       // Dark green
+  const lightGreen = "#d1fae5";      // Light green
+  const teal = "#0d9488";            // Teal accent
+  const darkGray = "#1f2937";
 
-  // for accessible height animation
   const contentRefs = useRef({});
 
   useEffect(() => {
-    // set maxHeight for open panel
     Object.keys(contentRefs.current).forEach((k) => {
       const el = contentRefs.current[k];
       if (!el) return;
@@ -55,109 +50,127 @@ export default function FoundationalCommitmentsVariantA() {
   }, [open]);
 
   return (
-    <section
-      id="faq"
-      className="py-16 px-6 md:px-10 bg-gradient-to-b from-white via-[#fff5ed] to-white"
-    >
-      {/* Header */}
-      <div className="text-center mb-12 max-w-4xl mx-auto">
-        <h2 className="text-sm uppercase tracking-widest font-semibold mb-2" style={{ color: orange }}>
-          Frequently Asked Questions
-        </h2>
-        <h1 className="text-3xl md:text-4xl font-extrabold" style={{ color: black }}>
-          Everything you want to know
-        </h1>
-        <p className="text-black/70 mt-3 text-base md:text-lg">Here’s what people commonly ask before working with us.</p>
-      </div>
+    <section id="faq" className="py-20 px-6 md:px-12 bg-white">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="flex justify-center items-center gap-4 mb-6">
+            <div className="w-16 h-px bg-emerald-200"></div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-8 border border-blue-200">
+                <Shield className="w-5 h-5 text-blue-700" />
+                Frequently Asked Questions
+              </span>
+            </div>
+            <div className="w-16 h-px bg-emerald-200"></div>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
+            {/* Financial Guidance */}
+            <span className="block font-semibold mt-2 text-blue-600">Everything you want to know</span>
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Here’s what people commonly ask before working with us.
+          </p>
+        </div>
 
-      {/* Layout */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-        {/* Accordion column */}
-        <div>
-          {commitmentsData.map((item, i) => {
-            const isOpen = open === i;
-            return (
-              <div
-                key={i}
-                className={`mb-4 rounded-2xl overflow-hidden transition-shadow ${isOpen ? "shadow-lg" : "shadow-sm"}`}
-                style={{
-                  border: isOpen ? `1px solid ${orange}` : "1px solid rgba(0,0,0,0.08)",
-                  background: isOpen ? "white" : "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9))",
-                }}
-              >
-                <button
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-panel-${i}`}
-                  className="w-full flex items-start gap-4 px-5 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-200"
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-base md:text-lg" style={{ color: black }}>
-                        {item.title}
-                      </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* Left Column - FAQ */}
+          <div>
+            <div className="space-y-2">
+              {commitmentsData.map((item, i) => {
+                const isOpen = open === i;
+                return (
+                  <div
+                    key={i}
+                    className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    <button
+                      onClick={() => setOpen(isOpen ? null : i)}
+                      className="w-full flex items-center justify-between p-6 text-left group focus:outline-none"
+                    >
+                      <div className="flex items-start gap-4 flex-1">
+                        <CheckCircle
+                          className={`w-5 h-5 mt-1 flex-shrink-0 transition-colors ${isOpen ? "text-emerald-500" : "text-gray-400 group-hover:text-emerald-400"
+                            }`}
+                        />
+                        <h3 className={`font-medium text-gray-800 transition-colors flex-1 ${isOpen ? "text-gray-900" : "group-hover:text-gray-900"
+                          }`}>
+                          {item.title}
+                        </h3>
+                      </div>
+                      <ChevronRight
+                        className={`w-5 h-5 transform transition-transform duration-300 flex-shrink-0 ${isOpen ? "rotate-90 text-emerald-500" : "text-gray-400"
+                          }`}
+                      />
+                    </button>
+
+                    <div
+                      id={`faq-panel-${i}`}
+                      ref={(el) => (contentRefs.current[i] = el)}
+                      className="overflow-hidden transition-max-h duration-500 ease-in-out"
+                      style={{ maxHeight: 0 }}
+                    >
+                      <div className="pb-6 px-6">
+                        <div className="pl-9">
+                          <div className="w-full h-px bg-emerald-100 mb-4"></div>
+                          <p className="text-gray-600 leading-relaxed text-sm">{item.content}</p>
+                        </div>
+                      </div>
                     </div>
-                    {/* <div className="mt-2 text-sm text-black/70 line-clamp-3">{item.content}</div> */}
                   </div>
+                );
+              })}
+            </div>
 
-                  <ChevronDown
-                    className={`w-6 h-6 transform transition-transform ${isOpen ? "rotate-180" : ""}`}
-                    style={{ color: orange }}
-                    aria-hidden="true"
-                  />
-                </button>
-
-                {/* animated content */}
-                <div
-                  id={`faq-panel-${i}`}
-                  ref={(el) => (contentRefs.current[i] = el)}
-                  className="px-5 overflow-hidden transition-max-h duration-300 ease-in-out"
-                  style={{ maxHeight: 0 }}
-                >
-                  <div className="py-4 pb-6 text-sm text-black/75">{item.content}</div>
-                </div>
+            {/* Trust Indicators */}
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="text-center p-4 bg-blue-50 rounded-lg border border-emerald-100">
+                <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                <div className="font-bold text-gray-900">1,200+</div>
+                <div className="text-sm text-gray-600">Families</div>
               </div>
-            );
-          })}
-
-          {/* CTA */}
-          <div className="mt-6">
-            <div className="inline-flex items-center gap-4 px-5 py-4 rounded-2xl shadow-sm border bg-white">
-              <Mail className="w-5 h-5" style={{ color: orange }} />
-              <div className="text-sm text-black/85">
-                Still have questions? Email{" "}
-                <a href="mailto:Info@futurewesecure.com" className="font-semibold" style={{ color: orange }}>
-                 Info@futurewesecure.com
-                </a>
+              <div className="text-center p-4 bg-blue-50 rounded-lg border border-teal-100">
+                <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                <div className="font-bold text-gray-900">15+</div>
+                <div className="text-sm text-gray-600">Years Experience</div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Image column */}
-        <div className="relative flex justify-center items-center">
-          <div className="relative w-full h-[380px] md:h-[520px] rounded-xl overflow-hidden shadow-xl">
-            <img
-              src={faqimg}
-              alt="Client consulting financial expert"
-              className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-            />
+          {/* Right Column - Image & Contact */}
+          <div className="space-y-8">
+            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+              <img
+                src={faqimg}
+                alt="Professional financial consultation"
+                className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10"></div>
 
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ background: "linear-gradient(to top, rgba(15,15,15,0.45), transparent)" }}
-            />
-
-            <div
-              className="absolute bottom-6 left-6 rounded-xl px-4 py-3 shadow-lg bg-white border"
-              style={{ borderColor: "rgba(0,0,0,0.06)" }}
-            >
-              <div className="flex items-center gap-3">
-                <HelpCircle className="w-5 h-5" style={{ color: orange }} />
-                <div>
-                  <div className="font-semibold text-sm">Trusted by 1,200+ families</div>
-                  <div className="text-xs text-black/60">Real guidance. Real clarity. Real results.</div>
+              {/* Overlay content */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/80 to-transparent">
+                <div className="text-white">
+                  <div className="font-semibold text-lg">Your Financial Security</div>
+                  <div className="text-sm text-emerald-200 mt-1">Protected with KALKI Expertise</div>
                 </div>
+              </div>
+            </div>
+
+            {/* Contact Card */}
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-8 text-white shadow-lg">
+              <div className="text-center">
+                <Mail className="w-12 h-12 mx-auto mb-4 text-white" />
+                <h3 className="text-xl font-bold mb-2">Ready to Secure Your Future?</h3>
+                <p className="text-emerald-100 mb-4">
+                  Get personalized financial advice from our experts
+                </p>
+                <a
+                  href="mailto:Info@futurewesecure.com"
+                  className="inline-flex items-center gap-2 bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
+                >
+                  <Mail className="w-4 h-4" />
+                  Contact Us Today
+                </a>
               </div>
             </div>
           </div>

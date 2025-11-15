@@ -1,8 +1,7 @@
-// Valueprop.VariantA.jsx
 import React from "react";
 
-const orange = "#f37021";
-const orangeDark = "#d95800";
+const bluePrimary = "#1e40af";
+const blueDark = "#1e3a8a";
 const black = "#0f0f0f";
 
 const services = [
@@ -11,7 +10,7 @@ const services = [
     description: (
       <>
         <p className="text-black/75 leading-relaxed">
-          We’ve helped clients prepare for the unknown while staying aligned with their financial goals. Ask us about:
+          We've helped clients prepare for the unknown while staying aligned with their financial goals. Ask us about:
         </p>
         <ul className="list-disc list-outside mt-3 text-black/70 pl-5 space-y-1">
           <li>Financial planning</li>
@@ -37,7 +36,7 @@ const services = [
   {
     title: "Committed to Service",
     description:
-      "Great strategies begin with great relationships. Our mission is to exceed expectations—on day one and year ten. Let’s map short- and long-term moves that bring your goals within reach.",
+      "Great strategies begin with great relationships. Our mission is to exceed expectations—on day one and year ten. Let's map short- and long-term moves that bring your goals within reach.",
     image:
       "https://s3.us-east-1.amazonaws.com/cdn.s3.webcontentor.com/OFFICE/VMF01/site_design/images/service-img9.jpg",
   },
@@ -45,106 +44,155 @@ const services = [
 
 export default function ValuepropVariantA() {
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-3 justify-center">
-            <span
-              className="inline-grid place-items-center w-12 h-12 rounded-xl shadow-md"
-              style={{
-                background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
-                clipPath:
-                  "polygon(25% 6%, 75% 6%, 94% 50%, 75% 94%, 25% 94%, 6% 50%)",
-              }}
-              aria-hidden="true"
-            >
-              <ArrowUpRight className="text-white" />
+    <section className="py-5 bg-gradient-to-b from-white to-gray-50/50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Minimal Header */}
+        <div className="text-center mb-20">
+          {/* <div className="flex justify-center items-center gap-6 mb-8">
+            <div className="w-16 h-0.5" style={{ backgroundColor: bluePrimary }}></div>
+            <span className="text-xs font-medium tracking-widest uppercase opacity-80" style={{ color: black }}>
+              KALKI FINANCIAL SOLUTIONS
             </span>
+            <div className="w-16 h-0.5" style={{ backgroundColor: bluePrimary }}></div>
+          </div> */}
 
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight" style={{ color: black }}>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-8 tracking-tight">
+            <span style={{ color: black }}>Our Value Proposition</span>
+          </h1>
+
+          <div className="space-y-4">
+            {/* <p className="text-2xl font-light opacity-90" style={{ color: black }}>
               Our Value Proposition
-            </h2>
+            </p> */}
+            <p className="text-lg opacity-80 max-w-2xl mx-auto" style={{ color: black }}>
+              Clear guidance. Disciplined strategy. A better future ahead.
+            </p>
           </div>
-          <p className="mt-3 text-black/65">Clear guidance. Disciplined strategy. A better future ahead.</p>
         </div>
 
-        {/* showcase list */}
-        <div className="space-y-10">
-          {services.map((s, idx) => {
-            const reverse = idx % 2 === 1;
-            return (
-              <article
-                key={idx}
-                className={`grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch ${reverse ? "md:grid-flow-dense" : ""}`}
-              >
-                {/* image */}
-                <div
-                  className={`md:col-span-6 rounded-2xl overflow-hidden shadow-lg relative transform transition-transform duration-500 hover:scale-[1.01]`}
-                  style={{ gridColumn: reverse ? "7 / span 6" : "1 / span 6" }}
-                >
-                  <img src={s.image} alt={s.title} className="w-full h-72 md:h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  <div
-                    className="absolute left-4 top-4 rounded-full px-3 py-1 text-sm font-semibold text-white"
-                    style={{ background: `linear-gradient(90deg, ${orange}, ${orangeDark})` }}
-                  >
-                    {idx === 0 ? "Flagship" : "Featured"}
+        {/* Services Grid */}
+        <div className="space-y-8">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className="group bg-white rounded-2xl p-8 border-2 hover:border-blue-200 transition-all duration-500 hover:shadow-xl"
+              style={{
+                borderColor: "rgba(30, 64, 175, 0.1)",
+                background: "linear-gradient(145deg, #ffffff, #fafbff)"
+              }}
+            >
+              <div className="flex flex-col lg:flex-row gap-8 items-start">
+                {/* Image */}
+                <div className="lg:w-2/5 relative overflow-hidden rounded-xl">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold text-white"
+                      style={{ backgroundColor: bluePrimary }}>
+                      {index === 0 ? "Flagship" : "Featured"}
+                    </span>
                   </div>
                 </div>
 
-                {/* content */}
-                <div
-                  className="md:col-span-6 bg-white rounded-2xl p-6 md:p-10 flex flex-col justify-between border border-black/5 shadow-sm"
-                  style={{ gridColumn: reverse ? "1 / span 6" : "7 / span 6" }}
-                >
-                  <div>
-                    <h3 className="text-2xl font-bold text-black">{s.title}</h3>
-                    <div className="mt-4 text-black/70">{s.description}</div>
-
-                    <ul className="mt-6 flex flex-wrap gap-2">
-                      <li className="text-xs px-3 py-1 rounded-full bg-black/5 text-black/70">Clarity</li>
-                      <li className="text-xs px-3 py-1 rounded-full bg-black/5 text-black/70">Tailored</li>
-                      <li className="text-xs px-3 py-1 rounded-full bg-black/5 text-black/70">Ongoing</li>
-                    </ul>
+                {/* Content */}
+                <div className="lg:w-3/5 space-y-6">
+                  <div className="flex items-center gap-4">
+                    {/* <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                      style={{ backgroundColor: bluePrimary }}>
+                      {index + 1}
+                    </div> */}
+                    <h3 className="text-2xl font-bold" style={{ color: black }}>
+                      {service.title}
+                    </h3>
                   </div>
 
-                  <div className="mt-6 flex items-center gap-4">
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.Calendly?.initPopupWidget?.({ url: "https://calendly.com/futurewesecure-info/30min" });
-                      }}
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold"
-                      style={{ background: `linear-gradient(90deg, ${orange}, ${orangeDark})` }}
-                    >
-                      Talk to an advisor
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 5l7 7-7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </a>
+                  <div className="text-black/70 leading-relaxed space-y-4">
+                    {service.description}
+                  </div>
 
-                    <a className="text-sm text-black/70 underline" href="#learn"  onClick={(e) => {
-                e.preventDefault();
-                // if you use Calendly or similar, call popup here
+                  {/* Minimal Tags */}
+                  <div className="flex flex-wrap gap-3">
+                    {["Clarity", "Tailored", "Ongoing"].map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className="px-3 py-1 rounded text-sm font-medium border"
+                        style={{
+                          borderColor: "rgba(30, 64, 175, 0.3)",
+                          color: bluePrimary
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <div className="flex items-center gap-4 pt-4">
+                    <button
+                      onClick={() => {
+                        if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
+                          window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
+                        } else {
+                          window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
+                        }
+                      }}
+                      className="px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg"
+                      style={{ backgroundColor: bluePrimary }}
+                    >
+                      Talk to Advisor
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
+                          window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
+                        }
+                      }}
+                      className="text-sm font-semibold transition-colors duration-300 hover:underline"
+                      style={{ color: bluePrimary }}
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-16">
+          <div className="inline-flex items-center gap-4 px-8 py-4 rounded-2xl bg-white border shadow-lg"
+            style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+            <span className="text-sm font-semibold tracking-widest uppercase" style={{ color: bluePrimary }}>
+              Ready to Start Your Journey?
+            </span>
+            <button
+              onClick={() => {
                 if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
                   window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
                 } else {
-                  // fallback to a route or external link — adjust as needed
                   window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
                 }
-              }}>Learn more</a>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+              }}
+              className="px-6 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg"
+              style={{ backgroundColor: bluePrimary }}
+            >
+              Get Started
+            </button>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* small inline arrow icon */
 function ArrowUpRight({ className = "", size = 18 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

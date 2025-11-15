@@ -1,148 +1,3 @@
-// // PartnerProgram.VariantB.jsx
-// import React, { useEffect, useRef, useState } from "react";
-// import {
-//   Handshake,
-//   Notebook,
-//   BookOpenText,
-//   ChartNoAxesCombined,
-//   X,
-// } from "lucide-react";
-
-// const cardData = [
-//   {
-//     title: "Responsibilities",
-//     description: [
-//       "Embrace the system, follow it, and align with your leaders.",
-//       "Earn while you learn with guided mentorship.",
-//       "Invite prospects to multiple workshops.",
-//       "Schedule follow-ups for continued growth.",
-//     ],
-//     Icon: Handshake,
-//   },
-//   {
-//     title: "Educate People On Securing Their Future",
-//     description: [
-//       "We help families secure future needs, build generational wealth, and enjoy life without compromise.",
-//     ],
-//     Icon: Notebook,
-//   },
-//   {
-//     title: "Required Skills",
-//     description: ["Energetic self-starter", "Coachable", "18+ with valid SSN"],
-//     Icon: BookOpenText,
-//   },
-//   {
-//     title: "What Will You Gain",
-//     description: [
-//       "Create plans covering retirement, tax efficiency, 401k rollovers, asset protection, and more.",
-//     ],
-//     Icon: ChartNoAxesCombined,
-//   },
-// ];
-
-// export default function PartnerProgramVariantB() {
-//   const [selectedCard, setSelectedCard] = useState(null);
-
-//   const calendlyReadyRef = useRef(false);
-//   const orange = "#f37021";
-//   const orangeDark = "#d95800";
-//   const black = "#0f0f0f";
-
-//   const openCalendly = () => {
-//     window.Calendly?.initPopupWidget?.({
-//       url: "https://calendly.com/jack-weplanfuture/60min",
-//     });
-//   };
-
-//   return (
-//     <section className="max-w-7xl mx-auto px-4 py-20 mt-10">
-//       {/* HEADER */}
-//       <div className="text-center mb-16 max-w-3xl mx-auto">
-//         <h2 className="text-4xl font-extrabold" style={{ color: black }}>
-//           Partner Program
-//         </h2>
-//         <p className="mt-4 text-black/70 text-lg">
-//           Build a meaningful career helping families secure their future.
-//         </p>
-//       </div>
-
-//       {/* GRID */}
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-//         {cardData.map((card, idx) => (
-//           <div
-//             key={idx}
-//             onClick={() => setSelectedCard(card)}
-//             className="relative bg-white rounded-3xl p-8 text-center border border-black/10 shadow-md hover:shadow-2xl transition-all cursor-pointer hover:-translate-y-1 hover:bg-white/90 backdrop-blur-sm"
-//           >
-//             {/* Floating Icon */}
-//             <div
-//               className="w-20 h-20 rounded-3xl grid place-items-center mx-auto -mt-12 shadow-lg"
-//               style={{
-//                 background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
-//               }}
-//             >
-//               <card.Icon className="w-10 h-10 text-white" />
-//             </div>
-
-//             <h3 className="mt-6 text-xl font-bold" style={{ color: black }}>
-//               {card.title}
-//             </h3>
-
-//             <p className="mt-3 text-black/70 text-sm leading-relaxed">
-//               {card.description[0].slice(0, 110)}…
-//             </p>
-
-//             <button className="mt-6 text-sm underline text-black/60">
-//               View Details
-//             </button>
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* MODAL */}
-//       {selectedCard && (
-//         <div
-//           className="fixed inset-0 bg-black/60 grid place-items-center p-4 z-50"
-//           onClick={() => setSelectedCard(null)}
-//         >
-//           <div
-//             className="bg-white rounded-3xl shadow-2xl p-6 max-w-xl w-full relative"
-//             onClick={(e) => e.stopPropagation()}
-//           >
-//             <button
-//               className="absolute top-4 right-4 hover:bg-gray-100 p-1 rounded"
-//               onClick={() => setSelectedCard(null)}
-//             >
-//               <X className="w-5 h-5" />
-//             </button>
-
-//             <h3 className="text-xl font-bold">{selectedCard.title}</h3>
-
-//             <ul className="mt-4 text-black/80 list-disc pl-5 space-y-2">
-//               {selectedCard.description.map((d, i) => (
-//                 <li key={i}>{d}</li>
-//               ))}
-//             </ul>
-
-//             <button
-//               onClick={openCalendly}
-//               className="mt-6 px-5 py-2.5 rounded-xl text-white text-sm font-semibold"
-//               style={{
-//                 background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
-//               }}
-//             >
-//               Book a Call
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </section>
-//   );
-// }
-
-
-
-// PartnerProgram.VariantA.jsx
 import React, { useEffect, useRef, useState } from "react";
 import {
   Handshake,
@@ -150,6 +5,7 @@ import {
   BookOpenText,
   ChartNoAxesCombined,
   X,
+  ChevronRight
 } from "lucide-react";
 
 const cardData = [
@@ -193,160 +49,154 @@ const cardData = [
 
 export default function PartnerProgramVariantA() {
   const [selectedCard, setSelectedCard] = useState(null);
-
   const calendlyReadyRef = useRef(false);
-  const orange = "#f37021";
-  const orangeDark = "#d95800";
+
+  const bluePrimary = "#1e40af";
+  const blueDark = "#1e3a8a";
   const black = "#0f0f0f";
 
   const openCalendly = () => {
-    const openPopup = () =>
-      window.Calendly?.initPopupWidget?.({
-        url: "https://calendly.com/jack-weplanfuture/60min",
-      });
-
-    if (calendlyReadyRef.current && window.Calendly) return openPopup();
-
-    let script = document.getElementById("calendly-script");
-    if (!script) {
-      script = document.createElement("script");
-      script.id = "calendly-script";
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
-      script.async = true;
-      script.onload = () => {
-        calendlyReadyRef.current = true;
-        openPopup();
-      };
-      document.body.appendChild(script);
+    if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
+      window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
+    } else {
+      window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
     }
   };
 
-  useEffect(() => {
-    if (!document.getElementById("calendly-script")) {
-      const s = document.createElement("script");
-      s.id = "calendly-script";
-      s.src = "https://assets.calendly.com/assets/external/widget.js";
-      s.async = true;
-      s.onload = () => (calendlyReadyRef.current = true);
-      document.body.appendChild(s);
-    }
-  }, []);
-
   return (
-    <section className="relative max-w-7xl mx-auto px-4 mt-20 py-16">
-      {/* HEADER */}
-      <div className="text-center max-w-4xl mx-auto mb-16">
-        <h2
-          className="text-4xl font-extrabold tracking-tight"
-          style={{ color: black }}
-        >
-          Partner Program
-        </h2>
-        <p className="mt-4 text-lg text-black/70">
-          Build a meaningful career helping families master personal finance.
-        </p>
+    <section className="py-20 bg-gradient-to-b from-white to-gray-50/50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Minimal Header */}
+        <div className="text-center mb-5 py-5">
+          <div className="flex justify-center items-center gap-6 ">
+            {/* <div className="w-16 h-0.5" style={{ backgroundColor: bluePrimary }}></div>
+            <span className="text-xs font-medium tracking-widest uppercase opacity-80" style={{ color: black }}>
+              KALKI FINANCIAL SOLUTIONS
+            </span>
+            <div className="w-16 h-0.5" style={{ backgroundColor: bluePrimary }}></div> */}
+          </div>
 
-        <button
-         onClick={(e) => {
-                e.preventDefault();
-                // if you use Calendly or similar, call popup here
-                if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                  window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
-                } else {
-                  // fallback to a route or external link — adjust as needed
-                  window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
-                }
-              }}
-          className="mt-6 inline-block rounded-full px-7 py-3 text-sm font-semibold"
-          style={{
-            background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
-            color: "white",
-            boxShadow: "0 10px 28px rgba(217,88,0,0.20)",
-          }}
-        >
-          Learn More
-        </button>
-      </div>
+          <h2 className=" py-5 text-3xl md:text-4xl lg:text-5xl font-black  leading-tight">
+            <span style={{ color: black }}>Partner </span>
+            {/* <br /> */}
+            <span style={{ color: bluePrimary }}>Program</span>
+          </h2>
 
-      {/* GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {cardData.map((card, idx) => (
-          <article
-            key={idx}
-            onClick={() => setSelectedCard(card)}
-            className="relative bg-white rounded-3xl p-8 border border-black/10 shadow-[0_8px_35px_rgba(0,0,0,0.08)] hover:shadow-[0_18px_60px_rgba(0,0,0,0.15)] transition-all cursor-pointer hover:-translate-y-1"
-          >
-            {/* Icon */}
+          <div className="space-y-4">
+            {/* <p className="text-2xl font-light opacity-90" style={{ color: black }}>
+              Career Program
+            </p> */}
+            <p className="text-lg opacity-80 max-w-2xl mx-auto" style={{ color: black }}>
+              Build a meaningful career helping families master personal finance.
+            </p>
+          </div>
+        </div>
+
+        {/* Minimal Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {cardData.map((card, index) => (
             <div
-              className="w-16 h-16 rounded-2xl grid place-items-center shadow-md"
+              key={index}
+              onClick={() => setSelectedCard(card)}
+              className="group bg-white rounded-2xl p-6 border-2 hover:border-blue-200 transition-all duration-500 hover:shadow-xl cursor-pointer"
               style={{
-                background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
+                borderColor: "rgba(30, 64, 175, 0.1)",
+                background: "linear-gradient(145deg, #ffffff, #fafbff)"
               }}
             >
-              <card.Icon className="w-8 h-8 text-white" />
+              <div className="flex items-start gap-4">
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                  style={{ backgroundColor: bluePrimary }}>
+                  <card.Icon className="w-6 h-6" />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-bold mb-3 leading-tight" style={{ color: black }}>
+                    {card.title}
+                  </h3>
+
+                  <ul className="space-y-1 mb-4">
+                    {card.description.slice(0, 2).map((item, i) => (
+                      <li key={i} className="text-sm text-black/70 leading-relaxed flex items-start gap-2">
+                        <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: bluePrimary }}></div>
+                        <span className="flex-1">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+                    <span className="text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all" style={{ color: bluePrimary }}>
+                      View Details
+                      <ChevronRight className="w-4 h-4" />
+                    </span>
+                    <span className="text-xs text-black/60">{card.description.length} points</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-16">
+          <div className="bg-white rounded-2xl p-8 border-2" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+            <h3 className="text-xl font-bold mb-4" style={{ color: black }}>Ready to Join Our Team?</h3>
+            <p className="text-black/70 mb-6 max-w-2xl mx-auto">
+              Start your journey toward a rewarding career in financial services with comprehensive training and mentorship.
+            </p>
+            <button
+              onClick={openCalendly}
+              className="w-full max-w-md mx-auto py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg"
+              style={{ backgroundColor: bluePrimary }}
+            >
+              Schedule Discovery Call
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Minimal Modal */}
+      {selectedCard && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSelectedCard(null)}>
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: bluePrimary }}>
+                  <selectedCard.Icon className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-bold" style={{ color: black }}>{selectedCard.title}</h3>
+              </div>
+              <button onClick={() => setSelectedCard(null)} className="p-1 hover:bg-gray-100 rounded">
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            <h3 className="mt-6 text-xl font-bold" style={{ color: black }}>
-              {card.title}
-            </h3>
-
-            <ul className="mt-4 text-black/70 leading-relaxed list-disc pl-5 space-y-1">
-              {card.description.slice(0, 3).map((item, i) => (
-                <li key={i}>{item}</li>
+            <div className="space-y-3">
+              {selectedCard.description.map((item, index) => (
+                <div key={index} className="p-3 rounded-lg border" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+                  <p className="text-black/80 text-sm">{item}</p>
+                </div>
               ))}
-            </ul>
+            </div>
 
-            <button className="mt-5 text-sm font-semibold text-black/60">
-              View Details →
-            </button>
-          </article>
-        ))}
-      </div>
-
-      {/* MODAL */}
-      {selectedCard && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 grid place-items-center p-4"
-          onClick={() => setSelectedCard(null)}
-        >
-          <div
-            className="bg-white rounded-3xl shadow-xl max-w-xl w-full p-6 relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded"
-              onClick={() => setSelectedCard(null)}
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <h3 className="text-xl font-bold mb-4">{selectedCard.title}</h3>
-
-            <ul className="list-disc pl-5 space-y-2 text-black/70">
-              {selectedCard.description.map((d, i) => (
-                <li key={i}>{d}</li>
-              ))}
-            </ul>
-
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                // if you use Calendly or similar, call popup here
-                if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                  window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
-                } else {
-                  // fallback to a route or external link — adjust as needed
-                  window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
-                }
-              }}
-              className="mt-6 rounded-xl px-5 py-2.5 text-sm font-semibold"
-              style={{
-                background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
-                color: "white",
-              }}
-            >
-              Book a Call
-            </button>
+            <div className="flex gap-3 mt-6 pt-4 border-t" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+              <button
+                onClick={openCalendly}
+                className="flex-1 py-3 rounded-lg font-semibold text-white transition-all duration-300"
+                style={{ backgroundColor: bluePrimary }}
+              >
+                Book Call
+              </button>
+              <button
+                onClick={() => setSelectedCard(null)}
+                className="flex-1 py-3 rounded-lg font-semibold border transition-all duration-300"
+                style={{ borderColor: bluePrimary, color: bluePrimary }}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { FaWhatsapp } from "react-icons/fa";
-import { Mail, Phone, Calendar, ShieldCheck, MapPin } from "lucide-react";
+import { FaWhatsapp, FaStar } from "react-icons/fa";
+import { Mail, Phone, Calendar, ShieldCheck, MapPin, Award, TrendingUp, Users, CheckCircle } from "lucide-react";
 import emailjs from "emailjs-com";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import faqimg from "../../assets/faqimg.jpg"; // optional, referenced if needed
 
-const ContactSection = () => {
+const ContactSectionV3 = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,9 +15,16 @@ const ContactSection = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const orange = "#f37021";
-  const orangeDark = "#d95800";
-  const black = "#0f0f0f";
+  // New color theme based on KALKI FINANCIAL SOLUTIONS branding
+  const darkBg = "#0f172a";
+  const cardDark = "#1e293b";
+  const primaryColor = "#2563eb"; // Professional blue
+  const secondaryColor = "#059669"; // Complementary green
+  const accentColor = "#7c3aed"; // Purple accent
+  const accentLight = "#a78bfa";
+  const textLight = "#f1f5f9";
+  const textMuted = "#94a3b8";
+  const borderColor = "#334155";
 
   const validateForm = () => {
     const newErrors = {};
@@ -64,7 +70,7 @@ const ContactSection = () => {
       )
       .then(
         (response) => {
-          toast.success("🎉 Thanks! Your message has been sent.");
+          toast.success("🎉 Excellent! We'll contact you within 24 hours.");
           setFormData({ name: "", email: "", message: "", company: "" });
           setErrors({});
         },
@@ -77,72 +83,188 @@ const ContactSection = () => {
   };
 
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{
-        background:
-          `radial-gradient(1200px 380px at 15% -10%, rgba(243,112,33,0.12), transparent 55%), linear-gradient(135deg, ${black}, #111211 55%, #0b0b0b)`,
-      }}
-    >
-      <ToastContainer position="top-right" autoClose={3000} />
+    <section className="relative overflow-hidden min-h-screen" style={{
+      background:
+        `radial-gradient(800px 260px at 12% 6%, rgba(37, 99, 235, 0.10), transparent 30%), ` +
+        `linear-gradient(180deg, #03050a 0%, #071127 30%, #0b0f16 60%)`,
+    }}>
+      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
 
-      {/* subtle texture */}
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
+      </div>
+
+      {/* Grid pattern overlay */}
       <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        className="absolute inset-0 opacity-[0.02] pointer-events-none"
         style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1.5px), radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1.5px)",
-          backgroundSize: "26px 26px",
-          backgroundPosition: "0 0, 13px 13px",
-          maskImage:
-            "linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.15), transparent)",
+          backgroundImage: `
+            linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(37, 99, 235, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px'
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-20 pb-16">
-        {/* Heading */}
-        <div className="text-center mb-10">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.12)",
-            }}
-          >
-            <ShieldCheck size={16} className="text-white" />
-            <span className="text-sm font-medium tracking-wide text-white/90">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-20 pb-16 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl mb-8"
+            style={{ background: 'rgba(255,255,255,0.05)', border: `1px solid ${borderColor}` }}>
+            <div className="flex items-center gap-2">
+              {/* {[1, 2, 3, 4, 5].map((star) => (
+                <FaStar key={star} className="w-4 h-4" style={{ color: primaryColor }} />
+              ))} */}
+            </div>
+            <span className="text-sm font-semibold uppercase tracking-wider text-white">
               We reply within 24 hours
             </span>
           </div>
 
-          <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            Let’s talk about your goals
+          <h2 className="text-3xl md:text-4xl  lg:text-5xl font-bold mb-6" style={{ color: textLight }}>
+            Let's talk about your goals
           </h2>
 
-          <p className="mt-2 text-white/80 max-w-2xl mx-auto">
-            Send a message, chat on WhatsApp, or book a quick call—whatever works
-            best for you.
+          <p className="text-lg max-w-3xl mx-auto leading-relaxed" style={{ color: textMuted }}>
+            Send a message, chat on WhatsApp, or book a quick call—whatever works best for you.
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid md:grid-cols-2 gap-10 items-start">
-          {/* Form card */}
-          <div className="bg-white rounded-2xl shadow-[0_18px_40px_-18px_rgba(0,0,0,.45)] border border-white/80 p-6 md:p-8">
-            <h3 className="text-xl md:text-2xl font-bold text-black text-center mb-1">
-              Contact Us
-            </h3>
-            <p className="text-center text-black/60 mb-6">
-              We'll get back to you quickly with clear next steps.
-            </p>
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Left Column - Contact Methods */}
+          <div className="space-y-6">
+            {/* Main Contact Card */}
+            <div className="rounded-3xl p-8 relative overflow-hidden"
+              style={{ background: cardDark, border: `1px solid ${borderColor}` }}>
+              {/* Primary accent line */}
+              <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-5"
-              noValidate
-              aria-describedby="form-errors"
-            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                  style={{ background: 'rgba(37, 99, 235, 0.1)', border: `1px solid rgba(37, 99, 235, 0.3)` }}>
+                  <Award className="w-7 h-7" style={{ color: primaryColor }} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold" style={{ color: textLight }}>KALKI FINANCIAL SOLUTIONS</h3>
+                  <p style={{ color: textMuted }}>Excellence in Financial Planning</p>
+                </div>
+              </div>
+
+              {/* Contact Info */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-4 p-4 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${borderColor}` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(37, 99, 235, 0.1)' }}>
+                    <Phone className="w-5 h-5" style={{ color: primaryColor }} />
+                  </div>
+                  <div>
+                    <div className="font-semibold" style={{ color: textLight }}>516-917-0756</div>
+                    <div style={{ color: textMuted, fontSize: '0.875rem' }}>Direct line to our advisors</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 p-4 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${borderColor}` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(37, 99, 235, 0.1)' }}>
+                    <Mail className="w-5 h-5" style={{ color: primaryColor }} />
+                  </div>
+                  <div>
+                    <div className="font-semibold" style={{ color: textLight }}>Info@futurewesecure.com</div>
+                    <div style={{ color: textMuted, fontSize: '0.875rem' }}>Response within 24 hours</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 p-4 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${borderColor}` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(37, 99, 235, 0.1)' }}>
+                    <MapPin className="w-5 h-5" style={{ color: primaryColor }} />
+                  </div>
+                  <div>
+                    <div className="font-semibold" style={{ color: textLight }}>Mount Airy, MD</div>
+                    <div style={{ color: textMuted, fontSize: '0.875rem' }}>Serving clients nationwide</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Action Buttons */}
+              <div className="space-y-3">
+                <a
+                  href="https://api.whatsapp.com/send?phone=15165818909&text=Hello!"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-200 transform hover:-translate-y-1 hover:shadow-2xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${primaryColor}, ${accentColor})`,
+                    color: textLight
+                  }}
+                >
+                  <FaWhatsapp className="w-5 h-5" />
+                  Instant WhatsApp Consultation
+                </a>
+
+                <button
+                  onClick={() =>
+                    window.Calendly?.initPopupWidget?.({
+                      url: "https://calendly.com/futurewesecure-info/30min",
+                    })
+                  }
+                  className="w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold border transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg"
+                  style={{
+                    borderColor: primaryColor,
+                    color: primaryColor,
+                    background: 'rgba(37, 99, 235, 0.05)'
+                  }}
+                >
+                  <Calendar className="w-5 h-5" />
+                  Schedule Strategy Session
+                </button>
+              </div>
+            </div>
+
+            {/* Trust Metrics */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 rounded-2xl"
+                style={{ background: cardDark, border: `1px solid ${borderColor}` }}>
+                <Users className="w-8 h-8 mx-auto mb-2" style={{ color: primaryColor }} />
+                <div className="text-2xl font-bold" style={{ color: textLight }}>1.2K+</div>
+                <div style={{ color: textMuted, fontSize: '0.75rem' }}>Families</div>
+              </div>
+              <div className="text-center p-4 rounded-2xl"
+                style={{ background: cardDark, border: `1px solid ${borderColor}` }}>
+                <TrendingUp className="w-8 h-8 mx-auto mb-2" style={{ color: primaryColor }} />
+                <div className="text-2xl font-bold" style={{ color: textLight }}>15+</div>
+                <div style={{ color: textMuted, fontSize: '0.75rem' }}>Years Exp</div>
+              </div>
+              <div className="text-center p-4 rounded-2xl"
+                style={{ background: cardDark, border: `1px solid ${borderColor}` }}>
+                <CheckCircle className="w-8 h-8 mx-auto mb-2" style={{ color: primaryColor }} />
+                <div className="text-2xl font-bold" style={{ color: textLight }}>24h</div>
+                <div style={{ color: textMuted, fontSize: '0.75rem' }}>Response</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Contact Form */}
+          <div className="rounded-3xl p-8 relative overflow-hidden"
+            style={{ background: cardDark, border: `1px solid ${borderColor}` }}>
+            {/* Form Header */}
+            <div className="text-center mb-8">
+              <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-4"></div>
+              <h3 className="text-3xl font-bold mb-2" style={{ color: textLight }}>
+                Begin Your Journey
+              </h3>
+              <p style={{ color: textMuted }}>
+                Complete the form below for a personalized financial strategy
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               <input
                 type="text"
                 name="company"
@@ -154,86 +276,75 @@ const ContactSection = () => {
               />
 
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-semibold text-black mb-1.5"
-                >
-                  Full Name
+                <label htmlFor="name" className="block text-sm font-semibold mb-3" style={{ color: textLight }}>
+                  Full Name *
                 </label>
                 <input
                   id="name"
                   type="text"
                   name="name"
-                  placeholder="Jane Doe"
-                  className={`w-full p-3 rounded-lg border outline-none focus:ring-2 transition ${
-                    errors.name
-                      ? "border-red-300 focus:ring-red-400"
-                      : "border-black/10 focus:ring-[rgba(243,112,33,0.18)]"
-                  }`}
+                  placeholder="Enter your full name"
+                  className={`w-full p-4 rounded-xl outline-none transition-all duration-200 ${errors.name
+                    ? "border-2 border-red-500 bg-red-500/10"
+                    : "border border-gray-600 bg-white/5 focus:border-blue-500 focus:bg-white/10"
+                    }`}
+                  style={{ color: textLight }}
                   value={formData.name}
                   onChange={handleChange}
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
                 />
                 {errors.name && (
-                  <p id="name-error" className="text-red-600 text-sm mt-1" role="alert">
+                  <p className="text-red-400 text-sm mt-2 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4" />
                     {errors.name}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-semibold text-black mb-1.5"
-                >
-                  Email
+                <label htmlFor="email" className="block text-sm font-semibold mb-3" style={{ color: textLight }}>
+                  Email Address *
                 </label>
                 <input
                   id="email"
                   type="email"
                   name="email"
-                  placeholder="you@example.com"
-                  className={`w-full p-3 rounded-lg border outline-none focus:ring-2 transition ${
-                    errors.email
-                      ? "border-red-300 focus:ring-red-400"
-                      : "border-black/10 focus:ring-[rgba(243,112,33,0.18)]"
-                  }`}
+                  placeholder="your.email@example.com"
+                  className={`w-full p-4 rounded-xl outline-none transition-all duration-200 ${errors.email
+                    ? "border-2 border-red-500 bg-red-500/10"
+                    : "border border-gray-600 bg-white/5 focus:border-blue-500 focus:bg-white/10"
+                    }`}
+                  style={{ color: textLight }}
                   value={formData.email}
                   onChange={handleChange}
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
                 {errors.email && (
-                  <p id="email-error" className="text-red-600 text-sm mt-1" role="alert">
+                  <p className="text-red-400 text-sm mt-2 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4" />
                     {errors.email}
                   </p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-semibold text-black mb-1.5"
-                >
-                  Message
+                <label htmlFor="message" className="block text-sm font-semibold mb-3" style={{ color: textLight }}>
+                  Your Financial Goals *
                 </label>
                 <textarea
                   id="message"
                   name="message"
-                  placeholder="How can we help?"
-                  className={`w-full p-3 rounded-lg min-h-[140px] border outline-none focus:ring-2 resize-y transition ${
-                    errors.message
-                      ? "border-red-300 focus:ring-red-400"
-                      : "border-black/10 focus:ring-[rgba(243,112,33,0.18)]"
-                  }`}
+                  placeholder="Tell us about your financial objectives, current situation, and what you'd like to achieve..."
+                  rows="5"
+                  className={`w-full p-4 rounded-xl outline-none resize-none transition-all duration-200 ${errors.message
+                    ? "border-2 border-red-500 bg-red-500/10"
+                    : "border border-gray-600 bg-white/5 focus:border-blue-500 focus:bg-white/10"
+                    }`}
+                  style={{ color: textLight }}
                   value={formData.message}
                   onChange={handleChange}
-                  aria-invalid={!!errors.message}
-                  aria-describedby={errors.message ? "message-error" : undefined}
                 />
                 {errors.message && (
-                  <p id="message-error" className="text-red-600 text-sm mt-1" role="alert">
+                  <p className="text-red-400 text-sm mt-2 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4" />
                     {errors.message}
                   </p>
                 )}
@@ -241,120 +352,50 @@ const ContactSection = () => {
 
               <button
                 type="submit"
-                className={`w-full py-3 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-                  isSubmitting
-                    ? "bg-orange-300 cursor-not-allowed"
-                    : "bg-gradient-to-br from-[#f37021] to-[#d95800] hover:-translate-y-0.5"
-                }`}
                 disabled={isSubmitting}
-                aria-busy={isSubmitting}
-                style={{
-                  boxShadow: isSubmitting
-                    ? "none"
-                    : "0 12px 34px rgba(217,88,0,0.16)",
-                }}
+                className={`w-full py-4 rounded-xl font-semibold transition-all duration-200 transform hover:-translate-y-1 ${isSubmitting
+                  ? "bg-blue-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-2xl"
+                  }`}
+                style={{ color: textLight }}
               >
                 {isSubmitting ? (
-                  <>
-                    <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/60 border-t-white" />
-                    Sending…
-                  </>
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    Processing Your Request...
+                  </div>
                 ) : (
-                  "Send Message"
+                  "Request Personalized Financial Plan"
                 )}
               </button>
 
-              <p id="form-errors" className="text-xs text-black/50 text-center" aria-live="polite">
-                We respect your privacy. We’ll never share your details.
-              </p>
+              {/* Security Assurance */}
+              <div className="flex items-center gap-3 p-4 rounded-xl"
+                style={{ background: 'rgba(37, 99, 235, 0.05)', border: `1px solid rgba(37, 99, 235, 0.2)` }}>
+                <ShieldCheck className="w-5 h-5 flex-shrink-0" style={{ color: primaryColor }} />
+                <p className="text-sm" style={{ color: textMuted }}>
+                  <strong style={{ color: primaryColor }}>100% Confidential:</strong> Your information is encrypted and never shared with third parties.
+                </p>
+              </div>
             </form>
           </div>
+        </div>
 
-          {/* Contact Options */}
-          <div className="space-y-6 text-center md:text-left">
-            <div
-              className="rounded-2xl p-6"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                backdropFilter: "blur(6px)",
-              }}
-            >
-              <p className="text-lg font-medium mb-3 text-white">Prefer a quick conversation?</p>
-
-              <div className="grid sm:grid-cols-2 gap-3">
-                <a
-                  href="mailto:Info@futurewesecure.com"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/6 px-4 py-3 hover:bg-white/12 transition text-white"
-                >
-                  <Mail size={18} />
-                  Email Us
-                </a>
-
-                <a
-                  href="tel:+1516-917-0756"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/6 px-4 py-3 hover:bg-white/12 transition text-white"
-                >
-                  <Phone size={18} />
-                  Call Us
-                </a>
-              </div>
-
-              <a
-                href="https://api.whatsapp.com/send?phone=15165818909&text=Hello!"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 w-full inline-flex items-center justify-center gap-3 rounded-xl px-4 py-3 text-white font-semibold"
-                style={{
-                  background: `linear-gradient(135deg, ${orange}, ${orangeDark})`,
-                  boxShadow: "0 10px 30px rgba(243,112,33,0.14)",
-                }}
-              >
-                <FaWhatsapp className="w-5 h-5" />
-                Message us on WhatsApp
-              </a>
-
-              <button
-                onClick={() =>
-                  window.Calendly?.initPopupWidget?.({
-                    url: "https://calendly.com/futurewesecure-info/30min",
-                  })
-                }
-                className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold border border-white/50 text-black bg-white"
-                style={{ background: "white" }}
-              >
-                <Calendar size={18} />
-                Book a Call
-              </button>
-            </div>
-
-            <div
-              className="rounded-2xl p-6"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                backdropFilter: "blur(6px)",
-              }}
-            >
-              <h4 className="text-xl font-semibold mb-1 text-white">Future We Secure</h4>
-              <p className="text-white/90">📞 516-917-0756</p>
-              <p className="text-white/90">📧 Info@futurewesecure.com</p>
-
-              <div className="flex items-center gap-2 mt-2 text-white/80">
-                <MapPin size={18} />
-                <span>Mount Airy, MD</span>
-              </div>
+        {/* Services Footer */}
+        <div className="mt-16 text-center">
+          {/* Copyright */}
+          <div className="mt-12 pt-8 border-t" style={{ borderColor: borderColor }}>
+            <div className="text-2xl font-bold mb-2" style={{ color: textLight }}>KALKI FINANCIAL SOLUTIONS</div>
+            <p className="mb-4" style={{ color: textMuted }}>Protection - Investment - Retirement Planning</p>
+            <div className="text-sm" style={{ color: textMuted }}>
+              © {new Date().getFullYear()} Future We Secure. All Rights Reserved.
             </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-14 text-center text-white/80 text-sm border-t border-white/10 pt-6">
-          © {new Date().getFullYear()} Future We Secure. All Rights Reserved.
-        </div>
       </div>
     </section>
   );
 };
 
-export default ContactSection;
+export default ContactSectionV3;

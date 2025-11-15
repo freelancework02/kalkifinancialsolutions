@@ -1,12 +1,11 @@
-// Productcard.VariantB.jsx (Improved & Bug-fixed)
 import React, { useEffect, useRef } from "react";
 
 export default function ProductcardVariantB() {
-  const orange = "#f37021";
-  const orangeDark = "#d95800";
+  const bluePrimary = "#1e40af";
+  const blueDark = "#1e3a8a";
   const black = "#0f0f0f";
 
-  // Calendly loader
+  // Calendly loader (same as before)
   const calendlyReadyRef = useRef(false);
 
   const openCalendly = () => {
@@ -39,7 +38,6 @@ export default function ProductcardVariantB() {
           openPopup();
         }
       }, 50);
-
       setTimeout(() => clearInterval(wait), 5000);
     }
   };
@@ -101,116 +99,128 @@ export default function ProductcardVariantB() {
   ];
 
   return (
-    <section className="py-16 bg-gray-50 mt-10">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-black">
-              Products
-            </h2>
-            <p className="text-sm text-black/60 mt-1">
-              Scan the range — quick CTAs let customers act fast.
-            </p>
-          </div>
+        <div className="text-center mb-10">
+          {/* <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-12 h-0.5" style={{ backgroundColor: bluePrimary }}></div>
+            <span className="text-lg font-bold tracking-widest uppercase" style={{ color: bluePrimary }}>
+              Product Portfolio
+            </span>
+            <div className="w-12 h-0.5" style={{ backgroundColor: bluePrimary }}></div>
+          </div> */}
 
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              openCalendly();
-            }}
-            className="mt-4 sm:mt-0 text-sm font-semibold px-4 py-2 rounded-md shadow-sm"
-            style={{
-              background: `linear-gradient(90deg, ${orange}, ${orangeDark})`,
-              color: "#fff",
-            }}
-          >
-            Book an appointment
-          </button>
+          <h2 className=" py-5 text-3xl md:text-4xl lg:text-5xl font-black  leading-tight">
+            <span style={{ color: black }}>Financial </span>
+            {/* <br /> */}
+            <span style={{ color: bluePrimary }}>Products</span>
+          </h2>
+
+          <p className="text-xl opacity-80 max-w-2xl mx-auto" style={{ color: black }}>
+            Scan the range — quick CTAs let customers act fast.
+          </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((s, i) => (
-            <article
-              key={i}
-              className="relative bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              {/* Orange angled stripe - fixed alignment */}
-              <div
-                className="absolute -left-14 top-4 w-44 h-8 -skew-x-12 opacity-90"
-                style={{
-                  background: `linear-gradient(90deg, ${orange}, ${orangeDark})`,
-                }}
-              />
-
-              {/* Image */}
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              {/* Body */}
-              <div className="p-5 pb-16">
-                <h3 className="text-lg font-semibold text-black leading-snug">
-                  {s.title}
-                </h3>
-
-                <p className="mt-3 text-sm text-black/70 leading-relaxed line-clamp-3">
-                  {s.description}
-                </p>
-
-                <div className="mt-5 flex items-center justify-between">
-                  <button
-                    onClick={(e) => {
-                e.preventDefault();
-                // if you use Calendly or similar, call popup here
-                if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                  window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
-                } else {
-                  // fallback to a route or external link — adjust as needed
-                  window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
-                }
+        {/* Products Grid - Enhanced */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {services.map((product, index) => (
+            <div
+              key={index}
+              className="group bg-white rounded-3xl overflow-hidden border-2 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+              style={{
+                borderColor: "rgba(30, 64, 175, 0.1)"
               }}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold shadow-sm transition-all"
-                    style={{
-                      background: `linear-gradient(90deg, ${orange}, ${orangeDark})`,
-                      color: "#fff",
-                    }}
-                  >
-                    Get details
-                  </button>
+            >
+              <div className="flex flex-col md:flex-row h-full">
+                {/* Image Section */}
+                <div className="md:w-2/5 relative overflow-hidden">
+                  <div className="h-48 md:h-full">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="absolute top-0 left-0 w-full h-1" style={{ backgroundColor: bluePrimary }}></div>
 
-                  <span className="text-xs text-black/60">
-                    Quick call • 15m
-                  </span>
+                  {/* Product Number */}
+                  {/* <div className="absolute top-4 left-4">
+                    <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md">
+                      <span className="font-bold text-xs" style={{ color: bluePrimary }}>
+                        {index + 1}
+                      </span>
+                    </div>
+                  </div> */}
+                </div>
+
+                {/* Content Section */}
+                <div className="md:w-3/5 p-6 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 leading-tight" style={{ color: black }}>
+                      {product.title}
+                    </h3>
+
+                    <p className="text-black/70 leading-relaxed text-sm mb-4">
+                      {product.description}
+                    </p>
+                  </div>
+
+                  {/* Action Section */}
+                  <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+                    <button
+                      onClick={openCalendly}
+                      className="px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg"
+                      style={{ backgroundColor: bluePrimary }}
+                    >
+                      Get Details
+                    </button>
+
+                    <div className="text-right">
+                      <span className="text-xs text-black/60">Quick call • </span>
+                      <span className="text-xs font-semibold" style={{ color: bluePrimary }}>15m</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Floating Badge (fixed positioning) */}
-              <span
-               onClick={(e) => {
-                e.preventDefault();
-                // if you use Calendly or similar, call popup here
-                if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                  window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
-                } else {
-                  // fallback to a route or external link — adjust as needed
-                  window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
-                }
-              }}
-                className="cursor-pointer absolute right-4 bottom-4 rounded-full px-3 py-1.5 text-xs font-semibold text-white shadow-md"
-                style={{
-                  background: `linear-gradient(90deg, ${orange}, ${orangeDark})`,
-                }}
+              {/* Start Badge */}
+              <button
+                onClick={openCalendly}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-lg transition-all duration-300 hover:scale-110"
+                style={{ backgroundColor: bluePrimary }}
+                aria-label={`Start ${product.title}`}
               >
                 Start
-              </span>
-            </article>
+              </button>
+            </div>
           ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-12">
+          <div className="bg-blue-50 rounded-3xl p-8 border-2" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: black }}>
+              Ready to Explore Your Options?
+            </h3>
+            <p className="text-black/70 mb-6 max-w-2xl mx-auto">
+              Book a complimentary consultation to discuss which financial products align with your goals.
+            </p>
+            <button
+              onClick={openCalendly}
+              className="px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
+              style={{ backgroundColor: bluePrimary }}
+            >
+              Book Free Consultation
+            </button>
+          </div>
+
+          <div className="mt-8">
+            <p className="text-sm font-semibold tracking-widest uppercase opacity-70" style={{ color: black }}>
+              KALKI FINANCIAL SOLUTIONS
+            </p>
+          </div>
         </div>
       </div>
     </section>
