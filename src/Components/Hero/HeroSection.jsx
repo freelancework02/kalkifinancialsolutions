@@ -1,23 +1,22 @@
-// src/components/HeroSection.jsx
 import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   Mail,
   Phone,
   ShieldCheck,
+  Calendar,
+  ArrowRight,
   TrendingUp,
   CheckCircle2,
-  ArrowRight,
-  Calendar,
 } from "lucide-react";
-import img from "../../assets/Herosection.png";
+import heroImg from "../../assets/Herosection.png";
 
-/* Calendly loader (idempotent) */
+/* Idempotent Calendly loader */
 function useCalendlyLoader() {
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.Calendly) return;
-    const existing = document.getElementById("calendly-script");
-    if (existing) return;
+    if (window && window.Calendly) return;
+    if (document.getElementById("calendly-script")) return;
     const s = document.createElement("script");
     s.id = "calendly-script";
     s.src = "https://assets.calendly.com/assets/external/widget.js";
@@ -26,262 +25,196 @@ function useCalendlyLoader() {
   }, []);
 }
 
-/**
- * HeroSection (updated to match Kalki logo colors)
- *
- * - Replaced orange accent with the logo blue palette
- *   - accentFrom: #1976D2 (primary blue)
- *   - accentTo:   #0F56A4 (darker blue)
- * - Focus rings, icon accents, CTAs and subtle tints use the blue system.
- * - Kept dark, dramatic visual style but with blue highlights to match branding.
- */
-const HeroSection = ({ topOffset = 88 }) => {
+const COLORS = {
+  navy: "#081426",
+  accentFrom: "#0ea5e9", // sky-500
+  accentTo: "#3b82f6", // blue-500
+  white: "#ffffff",
+  text: "#071124",
+  card: "rgba(255,255,255,0.06)",
+  glow: "rgba(59,130,246,0.12)",
+};
+
+const openCalendlyPopup = (url = "https://calendly.com/futurewesecure-info/30min") => {
+  try {
+    if (window && window.Calendly && window.Calendly.initPopupWidget) {
+      window.Calendly.initPopupWidget({ url });
+    } else {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  } catch (e) {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+};
+
+export default function HeroAttractive({ topOffset = 72 }) {
   useCalendlyLoader();
 
-  const openCalendly = (e) => {
-    e?.preventDefault();
-    try {
-      if (window.Calendly?.initPopupWidget) {
-        window.Calendly.initPopupWidget({
-          url: "https://calendly.com/futurewesecure-info/30min",
-        });
-      } else {
-        window.open(
-          "https://calendly.com/futurewesecure-info/30min",
-          "_blank",
-          "noopener,noreferrer"
-        );
-      }
-    } catch {
-      window.open(
-        "https://calendly.com/futurewesecure-info/30min",
-        "_blank",
-        "noopener,noreferrer"
-      );
-    }
-  };
-
-  const benefits = [
-    "Personalized retirement & income plans",
-    "Asset protection & legacy strategies",
+  const items = [
+    "Tailored retirement & income plans",
+    "Insurance & legacy protection",
     "Evidence-based investing discipline",
-    "Plain-English education & reviews",
   ];
-
-  const stats = [
-    { k: "99%", v: "Client Satisfaction" },
-    { k: "26+ yrs", v: "Combined Expertise" },
-    { k: "1,200+", v: "Plans Reviewed" },
-  ];
-
-  // Logo color system (blue)
-  const accentFrom = "#1976D2"; // primary blue
-  const accentTo = "#0F56A4"; // darker blue for gradient
-  const brandDark = "#002B55";
-  const mutedGray = "#333333";
 
   return (
     <section
-      aria-label="Hero — Future we Secure"
-      className="relative overflow-visible"
-      style={{ paddingTop: `${topOffset}px` }}
+      aria-label="Hero — Attractive"
+      className="bg-white relative overflow-hidden"
+      // style={{ paddingTop: `${topOffset}px`, backgroundColor: COLORS.navy }}
     >
-      {/* Background: keep dramatic dark backdrop but tint with subtle navy glow */}
+      {/* subtle background shapes */}
       <div
+        aria-hidden
         className="absolute inset-0 -z-10"
-        aria-hidden="true"
         style={{
-          background:
-            `radial-gradient(800px 260px at 12% 6%, rgba(25,118,210,0.10), transparent 30%), ` +
-            `linear-gradient(180deg, #03050a 0%, #071127 30%, #0b0f16 60%)`,
+          background: `radial-gradient(600px 240px at 10% 10%, ${COLORS.glow}, transparent 28%), linear-gradient(180deg, ${COLORS.navy} 0%, rgba(2,6,23,0.9) 60%)`,
         }}
       />
 
-      <div className="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center py-20">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center py-20 lg:py-28">
           {/* LEFT: copy */}
-          <div className="space-y-6">
-            <div
-              className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: `1px solid rgba(25,118,210,0.08)`,
-                backdropFilter: "blur(6px)",
-              }}
-              aria-label="Trust-first financial guidance"
-            >
-              <ShieldCheck className="w-4 h-4" style={{ color: accentFrom }} aria-hidden="true" />
-              <span className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.92)" }}>
-                Fiduciary-minded guidance
-              </span>
+          <div className="lg:col-span-6 space-y-6">
+            <div className="flex items-center gap-3 w-max rounded-full px-3 py-1.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.04)' }}>
+              <ShieldCheck className="w-4 h-4 text-sky-400" />
+              <span className="text-sm font-semibold text-white">Fiduciary-first guidance</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white">
-              Build a{" "}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-black">
+              Secure your
+              <br />
               <span
-                className="inline-block"
+                className="inline-block bg-clip-text text-transparent"
                 style={{
-                  background: `linear-gradient(90deg, ${accentFrom}, ${accentTo})`,
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
+                  backgroundImage: `linear-gradient(90deg, ${COLORS.accentFrom}, ${COLORS.accentTo})`,
+                  textShadow: '0 10px 40px rgba(10, 132, 255, 0.08)'
                 }}
               >
-                Stronger Financial Future
-              </span>{" "}
-              — Starting Now.
+                stronger financial future
+              </span>
+              <span className="block mt-2 text-lg font-medium text-black">— clear plans, fewer surprises.</span>
             </h1>
 
-            <p className="text-lg md:text-xl" style={{ color: "rgba(255,255,255,0.82)", maxWidth: "44rem" }}>
-              Clear plans. Smart protection. Disciplined growth. We combine education
-              and strategy to help you reach—and keep—your goals with clarity and
-              confidence.
+            <p className="text-lg text-black max-w-2xl">
+              We build plans that protect what matters and help your money work smarter. No jargon — just practical steps you can trust.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
-              <button
-                onClick={openCalendly}
-                className="inline-flex items-center gap-3 justify-center text-lg font-semibold py-3 px-6 rounded-xl shadow-xl focus:outline-none focus-visible:ring-4 transform transition-transform duration-150 hover:-translate-y-1"
+            <div className="flex flex-col sm:flex-row gap-4 mt-2">
+              <motion.button
+                whileHover={{ y: -4 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => openCalendlyPopup()}
+                className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl font-semibold shadow-2xl"
                 style={{
-                  background: `linear-gradient(90deg, ${accentFrom}, ${accentTo})`,
-                  color: "#ffffff",
-                  boxShadow: "0 14px 40px -12px rgba(15,86,164,0.18)",
+                  background: `linear-gradient(90deg, ${COLORS.accentFrom}, ${COLORS.accentTo})`,
+                  color: COLORS.white,
+                  boxShadow: '0 20px 50px -20px rgba(59,130,246,0.4)'
                 }}
-                aria-label="Book a free 30 minute consultation"
               >
-                <Calendar className="w-5 h-5" style={{ color: "#ffffff" }} aria-hidden="true" />
-                <span className="text-white">Book a Consultation</span>
-              </button>
+                <Calendar className="w-5 h-5" />
+                Book a free 30m consult
+              </motion.button>
 
               <a
                 href="/service"
-                className="inline-flex items-center gap-3 justify-center text-lg font-semibold py-3 px-6 rounded-xl border border-white/10 bg-white/4 backdrop-blur text-white hover:bg-white/8 transition"
-                aria-label="Explore our services"
-                style={{ borderColor: "rgba(255,255,255,0.08)" }}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-white/10 text-black bg-white/4 backdrop-blur"
               >
-                Explore Services
-                <ArrowRight className="w-4 h-4" style={{ color: "rgba(255,255,255,0.9)" }} aria-hidden="true" />
+                Explore services
+                <ArrowRight className="w-4 h-4" />
               </a>
             </div>
 
-            {/* Benefits */}
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              {benefits.map((t) => (
-                <li key={t} className="flex items-center gap-3" style={{ color: "rgba(255,255,255,0.95)" }}>
-                  <CheckCircle2
-                    className="w-5 h-5"
-                    style={{ color: accentFrom }}
-                    aria-hidden="true"
-                  />
-                  <span className="text-base font-medium">{t}</span>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 max-w-md">
+              {items.map((t) => (
+                <li key={t} className="flex items-center gap-3 text-white/95">
+                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/6">
+                    <CheckCircle2 className="w-4 h-4 text-black"  />
+                  </span>
+                  <span className="font-medium text-black">{t}</span>
                 </li>
               ))}
             </ul>
 
-            {/* Contact */}
-            <div className="mt-2 space-y-2">
+            <div className="mt-6 flex flex-wrap gap-6 items-center">
               <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5" style={{ color: accentFrom }} aria-hidden="true" />
-                <a
-                  href="mailto:Info@futurewesecure.com"
-                  className="font-medium"
-                  style={{ color: "rgba(255,255,255,0.92)" }}
-                >
-                  Info@futurewesecure.com
-                </a>
+                <Mail className="w-4 h-4 text-sky-300" />
+                <a href="mailto:Info@futurewesecure.com" className="text-black font-medium">Info@futurewesecure.com</a>
               </div>
 
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5" style={{ color: accentFrom }} aria-hidden="true" />
-                <a href="tel:+1516-917-0756" style={{ color: "rgba(255,255,255,0.92)", fontWeight: 600 }}>
-                  516-917-0756
-                </a>
+                <Phone className="w-4 h-4 text-sky-300" />
+                <a href="tel:+15169170756" className="text-black font-medium">516-917-0756</a>
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="pt-6 grid grid-cols-3 gap-3 max-w-xl">
-              {stats.map((s) => (
-                <div
-                  key={s.k}
-                  className="rounded-xl px-4 py-3 text-center"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: `1px solid rgba(25,118,210,0.06)`,
-                  }}
-                  aria-label={`${s.v}: ${s.k}`}
-                >
-                  <div className="text-xl md:text-2xl font-extrabold" style={{ color: "#ffffff" }}>{s.k}</div>
-                  <div className="text-xs" style={{ color: "rgba(255,255,255,0.68)" }}>{s.v}</div>
-                </div>
-              ))}
-            </div>
+            {/* small stats */}
+            <div className="mt-8 grid grid-cols-3 gap-3 max-w-xs">
+              <div className="rounded-xl p-3 text-center bg-white/4 border border-white/6">
+                <div className="text-lg font-extrabold text-black">99%</div>
+                <div className="text-xs text-black">Client satisfaction</div>
+              </div>
 
-            <p className="text-xs mt-4" style={{ color: "rgba(255,255,255,0.56)", maxWidth: "44rem" }}>
-              Educational content. Not an offer to buy or sell securities. Decisions
-              should consider your unique situation and objectives.
-            </p>
+              <div className="rounded-xl p-3 text-center bg-white/4 border border-white/6">
+                <div className="text-lg font-extrabold text-black">26+ yrs</div>
+                <div className="text-xs text-black">Combined expertise</div>
+              </div>
+
+              <div className="rounded-xl p-3 text-center bg-white/4 border border-white/6">
+                <div className="text-lg font-extrabold text-black">1,200+</div>
+                <div className="text-xs text-black">Plans reviewed</div>
+              </div>
+            </div>
           </div>
 
-          {/* RIGHT: visual/art */}
-          <div className="relative flex justify-center md:justify-end">
-            <figure className="relative w-full max-w-md md:max-w-lg lg:max-w-xl">
-              <div
-                className="relative rounded-2xl overflow-hidden shadow-2xl"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.04)",
-                  boxShadow: "0 24px 60px -24px rgba(0,0,0,0.65)",
-                }}
-              >
-                <picture>
-                  <img
-                    src={img}
-                    alt="Financial advisors reviewing growth charts and plans at a desk"
-                    className="w-full h-[320px] md:h-[420px] lg:h-[480px] object-cover object-center bg-white"
-                    loading="eager"
-                    fetchPriority="high"
-                  />
-                </picture>
+          {/* RIGHT: visual card */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative w-full max-w-lg rounded-3xl overflow-hidden"
+              style={{
+                boxShadow: '0 30px 80px -30px rgba(2,6,23,0.7)',
+                border: '1px solid rgba(255,255,255,0.04)'
+              }}
+            >
+              <img
+                src={heroImg}
+                alt="Advisors reviewing plans"
+                className="w-full h-[420px] object-cover object-center bg-white"
+                loading="eager"
+              />
 
-                {/* subtle top gradient (blue-tinted) */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+              {/* inner tint */}
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(2,6,23,0.12), rgba(2,6,23,0.36))' }} />
+
+              {/* floating micro-card */}
+              <div className="absolute -bottom-8 left-6">
+                <div className="bg-white rounded-2xl p-4 w-64 shadow-lg border" style={{ color: COLORS.text }}>
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-sky-500" />
+                    <div className="font-semibold">On-track projection</div>
+                  </div>
+
+                  <div className="mt-1 font-extrabold text-2xl">+12.4%</div>
+                  <div className="text-xs text-gray-500">12-mo rolling</div>
+                </div>
               </div>
 
-              {/* Floating stat pill */}
-              <figcaption className="absolute -bottom-6 left-3 sm:left-0">
-                <div
-                  className="rounded-2xl px-4 py-3"
-                  style={{
-                    background: "rgba(255,255,255,0.96)",
-                    color: "#0b1724",
-                    boxShadow: "0 18px 40px -18px rgba(0,0,0,0.45)",
-                    border: "1px solid rgba(255,255,255,0.9)",
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" style={{ color: accentFrom }} aria-hidden="true" />
-                    <div className="text-sm font-semibold tracking-wide">On-track Projection</div>
-                  </div>
-                  <div className="mt-1 text-2xl font-extrabold">+12.4%</div>
-                  <div className="text-xs text-slate-600">12-mo rolling</div>
+              {/* top-left badge */}
+              <div className="absolute top-6 left-6 rounded-full bg-white/6 px-3 py-1.5 backdrop-blur border border-white/6">
+                <div className="flex items-center gap-2 text-white">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="5" fill="#60A5FA"/></svg>
+                  <span className="text-xs font-medium">Trusted advisor</span>
                 </div>
-              </figcaption>
-            </figure>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* bottom fade */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
-        style={{
-          background: "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.18))",
-        }}
-      />
+      {/* bottom gradient */}
+      <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.24))' }} />
     </section>
   );
-};
-
-export default HeroSection;
+}
