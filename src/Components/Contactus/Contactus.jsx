@@ -235,22 +235,22 @@ const ContactSectionV3 = () => {
               <div className="space-y-4 mb-6">
                 <ContactRow
                   icon={<Phone className="w-5 h-5" style={{ color: COLORS.primaryBlue }} />}
-                  title="516-917-0756"
+                  title="773-726-0391"
                   subtitle="Direct line to our advisors"
                   colors={COLORS}
                 />
                 <ContactRow
                   icon={<Mail className="w-5 h-5" style={{ color: COLORS.primaryBlue }} />}
-                  title="Info@futurewesecure.com"
+                  title=" kalkifinancialsolutions@gmail.com"
                   subtitle="Response within 24 hours"
                   colors={COLORS}
                 />
-                <ContactRow
+                {/* <ContactRow
                   icon={<MapPin className="w-5 h-5" style={{ color: COLORS.primaryBlue }} />}
                   title="Mount Airy, MD"
                   subtitle="Serving clients nationwide"
                   colors={COLORS}
-                />
+                /> */}
               </div>
 
               {/* action buttons */}
@@ -267,7 +267,7 @@ const ContactSectionV3 = () => {
                   }}
                 >
                   <FaWhatsapp className="w-5 h-5" />
-                  Instant WhatsApp Consultation
+                  Message us on WhatsApp
                 </a>
 
                 <button
@@ -453,12 +453,12 @@ const ContactSectionV3 = () => {
         {/* footer */}
         <div className="mt-12 pt-10 border-t" style={{ borderColor: COLORS.border }}>
           <div className="text-center">
-            <div className="text-2xl font-bold mb-2" style={{ color: COLORS.white }}>
+            {/* <div className="text-2xl font-bold mb-2" style={{ color: COLORS.white }}>
               KALKI FINANCIAL SOLUTIONS
             </div>
             <p style={{ color: "rgba(255,255,255,0.68)", marginBottom: 10 }}>
               Protection - Investment - Retirement Planning
-            </p>
+            </p> */}
             <div style={{ color: "rgba(255,255,255,0.6)" }}>© {new Date().getFullYear()} Future We Secure. All Rights Reserved.</div>
           </div>
         </div>

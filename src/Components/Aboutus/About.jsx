@@ -1,5 +1,4 @@
 import React from "react";
-import image from "../../assets/ashesh.jpeg";
 
 export default function AboutUs() {
   const bluePrimary = "#1e40af";
@@ -7,10 +6,6 @@ export default function AboutUs() {
   const blueDark = "#1e3a8a";
   const black = "#0f0f0f";
   const white = "#ffffff";
-
-  const placeholder = `data:image/svg+xml;utf8,${encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'><rect width='100%' height='100%' fill='%23ffffff'/><g fill='%231e40af' opacity='0.12'><circle cx='400' cy='400' r='250'/></g><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='28' fill='%23000000' opacity='0.25'>Image unavailable</text></svg>`
-  )}`;
 
   return (
     <section
@@ -63,11 +58,6 @@ export default function AboutUs() {
           >
             ABOUT <span style={{ color: bluePrimary }}>US</span>
           </h1>
-
-          {/* <div
-            className="w-20 h-1 mx-auto rounded-full opacity-80"
-            style={{ backgroundColor: bluePrimary }}
-          ></div> */}
         </div>
 
         {/* Enhanced Card */}
@@ -148,87 +138,55 @@ export default function AboutUs() {
               </div>
             </div>
 
-            {/* RIGHT: Founder - Enhanced */}
+            {/* RIGHT: Founder - Image removed, kept name & outreach line */}
             <div className="lg:w-1/2 flex flex-col items-center text-center">
-              {/* Enhanced portrait container */}
-              <div className="relative mb-8">
-                {/* Improved glow effect */}
+              {/* Founder container without portrait */}
+              <div className="relative mb-8 w-full max-w-sm">
                 <div
-                  aria-hidden="true"
-                  className="absolute inset-0 left-1/2 top-1/2 w-[17rem] h-[17rem] lg:w-[21rem] lg:h-[21rem] rounded-full -translate-x-1/2 -translate-y-1/2"
+                  className="w-full rounded-3xl p-6"
                   style={{
-                    background: `radial-gradient(circle, ${bluePrimary} 0%, transparent 70%)`,
-                    filter: "blur(20px)",
-                    opacity: 0.15,
-                  }}
-                />
-
-                {/* Enhanced portrait ring */}
-                <div
-                  className="relative w-64 h-64 lg:w-80 lg:h-80 rounded-full p-2"
-                  style={{
-                    background: `linear-gradient(135deg, ${bluePrimary}, ${blueDark})`,
-                    boxShadow: `
-                      0 25px 50px -12px rgba(30, 64, 175, 0.25),
-                      inset 0 2px 4px rgba(255, 255, 255, 0.5)
-                    `,
+                    background: `linear-gradient(135deg, ${blueLight}, ${white})`,
+                    boxShadow: "0 10px 30px rgba(16,24,40,0.06)",
+                    border: `1px solid rgba(30,64,175,0.06)`,
                   }}
                 >
-                  <div className="w-full h-full rounded-full overflow-hidden border-4 border-white bg-white">
-                    <img
-                      src={image}
-                      alt="Ashish Patel — Founder"
-                      loading="lazy"
-                      decoding="async"
-                      role="img"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = placeholder;
+                  <div className="space-y-3">
+                    <h2
+                      className="text-base font-bold tracking-widest uppercase"
+                      style={{ color: bluePrimary }}
+                    >
+                      Founder
+                    </h2>
+                    <h3 className="text-3xl lg:text-4xl font-black" style={{ color: black }}>
+                      Ashish Patel
+                    </h3>
+                    <p className="text-black/60 text-base">(License Number – 21322826)</p>
+
+                    <div
+                      className="h-1 w-24 rounded-full mx-auto opacity-60 mt-2"
+                      style={{
+                        background: `linear-gradient(to right, transparent, ${bluePrimary}, transparent)`,
                       }}
-                      className="w-full h-full object-cover object-center"
                     />
+
+                    <div className="pt-4">
+                      <p className="text-sm font-medium tracking-wide uppercase" style={{ color: "rgba(15, 15, 15, 0.6)" }}>
+                        KALKI FINANCIAL SOLUTIONS
+                      </p>
+                      <p className="text-xs mt-1" style={{ color: "rgba(15, 15, 15, 0.5)" }}>
+                        Protection • Investment • Retirement Planning
+                      </p>
+
+                      {/* Attractive cold outreach line */}
+                      <p className="mt-4 text-sm font-semibold leading-tight">
+                        Ready to make your money work smarter? Book a free 15‑minute clarity call — we’ll map the simplest next step.
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                {/* Decorative dots */}
-                <div className="absolute -top-2 -right-2 w-4 h-4 rounded-full" style={{ backgroundColor: bluePrimary, opacity: 0.3 }}></div>
-                <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full" style={{ backgroundColor: bluePrimary, opacity: 0.3 }}></div>
-              </div>
-
-              {/* Enhanced founder info */}
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <h2
-                    className="text-base font-bold tracking-widest uppercase"
-                    style={{ color: bluePrimary }}
-                  >
-                    Founder
-                  </h2>
-                  <h3 className="text-3xl lg:text-4xl font-black" style={{ color: black }}>
-                    Ashish Patel
-                  </h3>
-                  <p className="text-black/60 text-base">(License Number – 21322826)</p>
-                </div>
-
-                {/* Enhanced accent line */}
-                <div
-                  className="h-1 w-24 rounded-full mx-auto opacity-60"
-                  style={{
-                    background: `linear-gradient(to right, transparent, ${bluePrimary}, transparent)`,
-                  }}
-                />
-
-                {/* Company tag */}
-                <div className="pt-4">
-                  <p className="text-sm font-medium tracking-wide uppercase" style={{ color: "rgba(15, 15, 15, 0.6)" }}>
-                    KALKI FINANCIAL SOLUTIONS
-                  </p>
-                  <p className="text-xs mt-1" style={{ color: "rgba(15, 15, 15, 0.5)" }}>
-                    Protection • Investment • Retirement Planning
-                  </p>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
