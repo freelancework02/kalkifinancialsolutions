@@ -1,7 +1,15 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+// EventsGalleryVariantBEnhanced.jsx
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { ChevronLeft, ChevronRight, X, Calendar, Users, MapPin } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Calendar,
+  Users,
+  MapPin,
+} from "lucide-react";
 
 /* --------------------- Firebase (unchanged) --------------------- */
 const firebaseConfig = {
@@ -15,6 +23,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+/* --------------------- Branding & assets --------------------- */
+const LOGO_PATH = "/mnt/data/logonew.png"; // developer-provided local logo image
+
+const COLORS = {
+  primary: "#1e40af",
+  primaryDark: "#1e3a8a",
+  light: "#dbeafe",
+  mutedText: "rgba(15,15,15,0.72)",
+};
+
+/* --------------------- Component --------------------- */
 export default function EventsGalleryVariantB() {
   const [eventsData, setEventsData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,18 +44,15 @@ export default function EventsGalleryVariantB() {
     images: [],
     index: 0,
     title: "",
+    caption: "",
   });
 
   const [visibleIds, setVisibleIds] = useState(new Set());
   const observerRef = useRef(null);
 
-  // Brand colors
-  const bluePrimary = "#1e40af";
-  const blueDark = "#1e3a8a";
-  const blueLight = "#dbeafe";
-  const black = "#0f0f0f";
-
+  // fetch events
   useEffect(() => {
+    let cancelled = false;
     const fetchEvents = async () => {
       try {
         const qs = await getDocs(collection(db, "properedgefinance"));
@@ -44,24 +60,28 @@ export default function EventsGalleryVariantB() {
           id: Number.isNaN(parseInt(doc.id, 10)) ? doc.id : parseInt(doc.id, 10),
           ...doc.data(),
         }));
+        // stable sort by numeric id if available
         events.sort((a, b) => {
           const an = typeof a.id === "number";
           const bn = typeof b.id === "number";
           if (an && bn) return a.id - b.id;
           return String(a.id).localeCompare(String(b.id));
         });
-        setEventsData(events);
+        if (!cancelled) setEventsData(events);
       } catch (e) {
         console.error(e);
-        setErr("Couldn't load the gallery. Please try again later.");
+        if (!cancelled) setErr("Couldn't load the gallery. Please try again later.");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
     fetchEvents();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // IntersectionObserver for animations
+  /* IntersectionObserver reveal */
   useEffect(() => {
     if (typeof window === "undefined") return;
     observerRef.current = new IntersectionObserver(
@@ -88,15 +108,15 @@ export default function EventsGalleryVariantB() {
   }, []);
 
   const setCardRef = useCallback((el) => {
-    if (!el) return;
+    if (!el || !observerRef.current) return;
     const id = el.getAttribute("data-event-id");
     if (!id) return;
-    observerRef.current && observerRef.current.observe(el);
+    observerRef.current.observe(el);
   }, []);
 
-  const openLightbox = useCallback((images, index = 0, title = "") => {
+  const openLightbox = useCallback((images, index = 0, title = "", caption = "") => {
     if (!Array.isArray(images) || images.length === 0) return;
-    setLightbox({ open: true, images, index, title });
+    setLightbox({ open: true, images, index, title, caption });
     document.body.style.overflow = "hidden";
   }, []);
 
@@ -113,7 +133,7 @@ export default function EventsGalleryVariantB() {
     setLightbox((s) => ({ ...s, index: (s.index + 1) % s.images.length }));
   }, []);
 
-  // Keyboard navigation
+  // keyboard navigation for lightbox
   useEffect(() => {
     const handler = (e) => {
       if (!lightbox.open) return;
@@ -125,6 +145,7 @@ export default function EventsGalleryVariantB() {
     return () => window.removeEventListener("keydown", handler);
   }, [lightbox.open, closeLightbox, prevImage, nextImage]);
 
+  // choose hero image for event
   function heroImageForEvent(e) {
     if (Array.isArray(e.images) && e.images.length) return e.images[0];
     if (e.thumbnail) return e.thumbnail;
@@ -132,250 +153,356 @@ export default function EventsGalleryVariantB() {
     return "";
   }
 
-  return (
-    <section className="py-20 bg-gradient-to-br from-white to-blue-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-5 py-5">
-          {/* <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/80 backdrop-blur-sm border shadow-lg mb-8"
-            style={{ borderColor: "rgba(30, 64, 175, 0.15)" }}>
-            <div className="w-2 h-2  rounded-full" style={{ backgroundColor: bluePrimary }}></div>
-            <span className="text-sm font-bold tracking-widest uppercase" style={{ color: bluePrimary }}>
-              Events Gallery
-            </span>
-            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: bluePrimary }}></div>
-          </div> */}
+  /* small helpers */
+  const fallbackImg = (e) => {
+    e.target.onerror = null;
+    e.target.src =
+      "data:image/svg+xml;utf8," +
+      encodeURIComponent(
+        `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><rect width='100%' height='100%' fill='${COLORS.light}'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='${COLORS.primary}' font-family='Arial' font-size='28'>Image unavailable</text></svg>`
+      );
+  };
 
-          <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight" style={{ color: black }}>
-            Gallery — <span style={{ color: bluePrimary }}>Magazine View</span>
+  return (
+    <section style={{ padding: "64px 18px", background: "linear-gradient(180deg,#fff,#fbfdff)" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
+        {/* Header */}
+        <header style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 12, background: "white", padding: "8px 14px", borderRadius: 999, boxShadow: "0 6px 20px rgba(16,24,40,0.04)", border: `1px solid ${COLORS.light}` }}>
+            <img src={LOGO_PATH} alt="Kalki logo" style={{ width: 28, height: 28, objectFit: "contain" }} onError={(e) => (e.currentTarget.style.display = "none")} />
+            <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.primary }}>Events Gallery</div>
+          </div>
+
+          <h2 style={{ fontSize: 36, margin: "18px 0 6px", fontWeight: 900 }}>
+            Gallery — <span className="text-[#327BBE]">Magazine View</span>
           </h2>
 
-          {/* <div className="w-24 h-1.5 mx-auto mb-6 rounded-full" style={{ backgroundColor: bluePrimary }}></div> */}
-
-          <p className="text-xl opacity-80 max-w-3xl mx-auto" style={{ color: black }}>
+          <p style={{ color: COLORS.mutedText, maxWidth: 880, margin: "0 auto" }}>
             Carefully composed event pages with a large hero image and preview strip — fast to scan, pleasant to explore.
           </p>
-        </div>
+        </header>
 
-        {/* Loading */}
+        {/* Loading skeleton */}
         {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-2xl p-6 bg-white/40 animate-pulse h-64" />
+          <div style={{ display: "grid", gap: 20 }}>
+            {[1, 2, 3].map((n) => (
+              <div key={n} style={{ borderRadius: 16, padding: 18, background: "linear-gradient(90deg,#f6f8ff,#ffffff)", display: "flex", gap: 16 }}>
+                <div style={{ flex: "0 0 56%", height: 220, borderRadius: 12, background: "linear-gradient(90deg,#e9eefc,#f8fbff)", animation: "pulse 1.6s infinite" }} />
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div style={{ height: 18, width: "70%", background: "#eef5ff", borderRadius: 6, animation: "pulse 1.6s infinite" }} />
+                  <div style={{ height: 12, width: "50%", background: "#f6f9ff", borderRadius: 6, animation: "pulse 1.6s infinite" }} />
+                  <div style={{ flex: 1, background: "#fbfdff", borderRadius: 8 }} />
+                </div>
+              </div>
             ))}
+            <style>{`@keyframes pulse{0%{opacity:1}50%{opacity:.45}100%{opacity:1}}`}</style>
           </div>
         )}
 
         {/* Error */}
-        {!loading && err && (
-          <div className="text-center text-black/70 py-16">{err}</div>
-        )}
+        {!loading && err && <div style={{ textAlign: "center", color: COLORS.mutedText, padding: 40 }}>{err}</div>}
 
-        {/* Events Grid */}
-        <div className="space-y-12">
-          {!loading && !err && eventsData.map((ev) => {
-            const images = Array.isArray(ev.images) ? ev.images : [];
-            const hero = heroImageForEvent(ev);
-            const visible = visibleIds.has(String(ev.id));
+        {/* Events */}
+        {!loading && !err && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
+            {eventsData.length === 0 && <div style={{ color: COLORS.mutedText }}>No events found.</div>}
 
-            return (
-              <article
-                key={ev.id}
-                data-event-id={String(ev.id)}
-                ref={setCardRef}
-                className={`bg-white rounded-3xl overflow-hidden border-2 shadow-xl hover:shadow-2xl transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                  }`}
-                style={{
-                  borderColor: "rgba(30, 64, 175, 0.1)",
-                  transition: "opacity .55s ease, transform .55s cubic-bezier(.2,.9,.2,1), box-shadow .3s ease"
-                }}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-                  {/* Main Hero Image */}
-                  <div className="lg:col-span-2">
-                    <div className="relative rounded-2xl overflow-hidden shadow-lg">
+            {eventsData.map((ev) => {
+              const images = Array.isArray(ev.images) ? ev.images : [];
+              const hero = heroImageForEvent(ev);
+              const visible = visibleIds.has(String(ev.id));
+              return (
+                <article
+                  key={ev.id}
+                  data-event-id={String(ev.id)}
+                  ref={setCardRef}
+                  style={{
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    border: `1px solid ${COLORS.light}`,
+                    boxShadow: visible ? "0 16px 40px rgba(16,24,40,0.06)" : "none",
+                    transform: visible ? "translateY(0)" : "translateY(12px)",
+                    opacity: visible ? 1 : 0,
+                    transition: "opacity .6s ease, transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .3s ease",
+                    background: "white",
+                  }}
+                >
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 18 }}>
+                    {/* hero */}
+                    <div>
                       <button
-                        onClick={() => openLightbox(images, 0, ev.title || `Event ${ev.id}`)}
-                        className="group block w-full text-left"
+                        onClick={() => openLightbox(images, 0, ev.title || `Event ${ev.id}`, ev.description || "")}
+                        style={{ display: "block", width: "100%", textAlign: "left", border: "none", background: "transparent", padding: 0, cursor: images.length ? "zoom-in" : "default" }}
                         aria-label={`Open gallery for ${ev.title || `Event ${ev.id}`}`}
                       >
-                        <div className="relative h-72 md:h-96 w-full bg-gray-100 overflow-hidden">
+                        <div style={{ position: "relative", width: "100%", height: 420, minHeight: 260, overflow: "hidden", background: "#f2f7ff" }}>
                           {hero ? (
                             <img
                               src={hero}
                               alt={ev.title || ""}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              onError={fallbackImg}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform .9s ease" }}
                               loading="lazy"
                             />
                           ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-                              <Calendar className="w-16 h-16 opacity-30" style={{ color: bluePrimary }} />
+                            <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", color: COLORS.primary }}>
+                              <Calendar size={64} />
                             </div>
                           )}
 
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                          {/* overlay */}
+                          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.06) 45%, transparent)" }} />
 
-                          {/* Event Info Overlay */}
-                          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <h3 className="text-2xl md:text-3xl font-bold leading-tight drop-shadow-lg">
+                          {/* info */}
+                          <div style={{ position: "absolute", left: 22, bottom: 22, right: 22, color: "white" }}>
+                            <h3 style={{ margin: 0, fontSize: 26, fontWeight: 800, lineHeight: 1.05 }}>
                               {ev.title || `Event ${ev.id}`}
                             </h3>
-                            <p className="mt-2 text-white/90 text-lg drop-shadow-lg max-w-2xl">
-                              {ev.subtitle || (ev.description ? String(ev.description).slice(0, 120) + "…" : "")}
+                            <p style={{ marginTop: 8, maxWidth: "70%", color: "rgba(255,255,255,0.92)" }}>
+                              {ev.subtitle || (ev.description ? String(ev.description).slice(0, 140) + "…" : "")}
                             </p>
                           </div>
 
-                          {/* Image Count Badge */}
                           {images.length > 0 && (
-                            <div className="absolute top-4 right-4">
-                              <span className="px-3 py-2 rounded-full text-sm font-bold text-white shadow-lg backdrop-blur-sm bg-black/40">
+                            <div style={{ position: "absolute", top: 16, right: 16 }}>
+                              <div style={{ padding: "8px 12px", background: "rgba(0,0,0,0.45)", color: "white", borderRadius: 999, fontWeight: 700, fontSize: 13 }}>
                                 {images.length} photos
-                              </span>
+                              </div>
                             </div>
                           )}
                         </div>
                       </button>
                     </div>
-                  </div>
 
-                  {/* Sidebar Content */}
-                  <div className="space-y-4">
-                    {/* Event Details Card */}
-                    <div className="bg-blue-50 rounded-2xl p-4 border-2" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
-                      <h4 className="font-bold text-lg mb-3" style={{ color: black }}>
-                        Event Details
-                      </h4>
-
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <Calendar className="w-4 h-4" style={{ color: bluePrimary }} />
-                          <span className="text-sm text-black/70">{ev.date || "Date TBA"}</span>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          <MapPin className="w-4 h-4" style={{ color: bluePrimary }} />
-                          <span className="text-sm text-black/70">{ev.location || "Location TBA"}</span>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          <Users className="w-4 h-4" style={{ color: bluePrimary }} />
-                          <span className="text-sm text-black/70">{ev.attendees || "Multiple attendees"}</span>
+                    {/* sidebar */}
+                    <aside style={{ padding: 18, display: "flex", flexDirection: "column", gap: 14 }}>
+                      <div style={{ background: "#f8fbff", padding: 12, borderRadius: 12, border: `1px solid ${COLORS.light}` }}>
+                        <h4 style={{ margin: 0, fontWeight: 800 }}>Event Details</h4>
+                        <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
+                          <div style={{ display: "flex", gap: 8, alignItems: "center", color: COLORS.mutedText }}>
+                            <Calendar size={16} style={{ color: COLORS.primary }} /> <span>{ev.date || "Date TBA"}</span>
+                          </div>
+                          <div style={{ display: "flex", gap: 8, alignItems: "center", color: COLORS.mutedText }}>
+                            <MapPin size={16} style={{ color: COLORS.primary }} /> <span>{ev.location || "Location TBA"}</span>
+                          </div>
+                          <div style={{ display: "flex", gap: 8, alignItems: "center", color: COLORS.mutedText }}>
+                            <Users size={16} style={{ color: COLORS.primary }} /> <span>{ev.attendees || "Multiple attendees"}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Image Previews */}
-                    <div className="grid grid-cols-2 gap-3">
-                      {images.slice(0, 4).map((src, i) => (
-                        <button
-                          key={i}
-                          onClick={() => openLightbox(images, i, ev.title)}
-                          className="group relative block rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                          style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}
-                          aria-label={`Open image ${i + 1}`}
-                        >
-                          <div className="aspect-square overflow-hidden">
-                            <img
-                              src={src}
-                              alt={`preview ${i + 1}`}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                              loading="lazy"
-                            />
-                          </div>
-                          <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-colors duration-300" />
-                        </button>
-                      ))}
-
-                      {images.length === 0 && (
-                        <div className="col-span-2 rounded-xl border-2 p-6 text-center" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
-                          <Calendar className="w-8 h-8 mx-auto mb-2 opacity-40" style={{ color: bluePrimary }} />
-                          <p className="text-sm text-black/60">No photos available</p>
+                      {/* small preview strip */}
+                      <div>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 8 }}>
+                          {images.slice(0, 4).map((src, i) => (
+                            <button
+                              key={i}
+                              onClick={() => openLightbox(images, i, ev.title || "", ev.description || "")}
+                              style={{
+                                borderRadius: 10,
+                                overflow: "hidden",
+                                border: `1px solid ${COLORS.light}`,
+                                padding: 0,
+                                display: "block",
+                                background: "white",
+                                cursor: "pointer",
+                              }}
+                              aria-label={`Open image ${i + 1}`}
+                            >
+                              <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden" }}>
+                                <img src={src} alt={`preview ${i + 1}`} onError={fallbackImg} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+                              </div>
+                            </button>
+                          ))}
+                          {images.length === 0 && (
+                            <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: 12, borderRadius: 12, border: `1px solid ${COLORS.light}`, color: COLORS.mutedText }}>
+                              No photos available
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
+                      </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col gap-3">
-                      <button
-                        onClick={() => openLightbox(images, 0, ev.title)}
-                        className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ backgroundColor: bluePrimary }}
-                        disabled={images.length === 0}
-                      >
-                        View Gallery ({images.length})
-                      </button>
-
-                      {ev.meetingLink && (
-                        <a
-                          href={ev.meetingLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full py-3 rounded-xl font-semibold text-center border-2 transition-all duration-300 hover:shadow-lg hover:scale-105"
-                          style={{ borderColor: bluePrimary, color: bluePrimary }}
+                      {/* actions */}
+                      <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
+                        <button
+                          onClick={() => openLightbox(images, 0, ev.title || "", ev.description || "")}
+                          disabled={images.length === 0}
+                          style={{
+                            background: "#327BBE",
+                            color: "white",
+                            padding: "12px 14px",
+                            borderRadius: 10,
+                            border: "none",
+                            fontWeight: 600,
+                            cursor: images.length ? "pointer" : "not-allowed",
+                          }}
                         >
-                          Join Meeting
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                          View Gallery ({images.length})
+                        </button>
 
-        {/* Bottom Branding */}
-        <div className="text-center mt-16">
-          <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-white border shadow-lg"
-            style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
-            <span className="text-sm font-semibold tracking-widest uppercase opacity-70" style={{ color: black }}>
-              KALKI FINANCIAL SOLUTIONS
-            </span>
+                        {ev.meetingLink && (
+                          <a
+                            href={ev.meetingLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              border: `1px solid ${COLORS.primary}`,
+                              color: COLORS.primary,
+                              padding: "10px 14px",
+                              borderRadius: 10,
+                              textAlign: "center",
+                              fontWeight: 700,
+                              textDecoration: "none",
+                            }}
+                          >
+                            Join Meeting
+                          </a>
+                        )}
+                      </div>
+                    </aside>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Branding footer */}
+        <div style={{ textAlign: "center", marginTop: 28 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 12, background: "white", padding: "10px 18px", borderRadius: 999, border: `1px solid ${COLORS.light}`, boxShadow: "0 6px 20px rgba(16,24,40,0.04)" }}>
+            <img src={LOGO_PATH} alt="Kalki logo" style={{ width: 28, height: 28, objectFit: "contain" }} onError={(e) => (e.currentTarget.style.display = "none")} />
+            <div style={{ fontSize: 13, fontWeight: 800 }} className="text-[#327BBE]">KALKI FINANCIAL SOLUTIONS</div>
           </div>
         </div>
       </div>
 
-      {/* Enhanced Lightbox */}
+      {/* Lightbox */}
       {lightbox.open && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={closeLightbox}>
-          <div className="relative w-full max-w-6xl max-h-[90vh] rounded-2xl overflow-hidden bg-white" onClick={(e) => e.stopPropagation()}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.title}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            background: "rgba(3,6,12,0.75)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 18,
+          }}
+          onClick={closeLightbox}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: 1100,
+              maxHeight: "90vh",
+              borderRadius: 14,
+              overflow: "hidden",
+              background: "#fff",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
-              <h3 className="font-bold text-lg" style={{ color: black }}>{lightbox.title}</h3>
-              <div className="flex items-center gap-4">
-                <span className="px-3 py-1 rounded-full text-sm font-semibold text-white" style={{ backgroundColor: bluePrimary }}>
-                  {lightbox.index + 1} / {lightbox.images.length}
-                </span>
-                <button onClick={closeLightbox} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                  <X className="w-5 h-5" />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 14, borderBottom: `1px solid ${COLORS.light}` }}>
+              <div>
+                <div style={{ fontWeight: 800 }}>{lightbox.title}</div>
+                <div style={{ color: COLORS.mutedText, fontSize: 13 }}>{lightbox.caption}</div>
+              </div>
+
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <div style={{ padding: "6px 10px", background: COLORS.primary, color: "white", borderRadius: 999, fontWeight: 800 }}>
+                  {lightbox.index + 1}/{lightbox.images.length}
+                </div>
+
+                <button onClick={closeLightbox} style={{ background: "transparent", border: "none", padding: 8, cursor: "pointer" }} aria-label="Close">
+                  <X size={18} />
                 </button>
               </div>
             </div>
 
-            {/* Image Content */}
-            <div className="relative bg-black flex items-center justify-center p-8">
-              <img
-                src={lightbox.images[lightbox.index]}
-                alt={`lightbox ${lightbox.index + 1}`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg"
-              />
+            {/* Image + nav */}
+            <div style={{ display: "flex", gap: 12, alignItems: "stretch", padding: 12, flex: 1, minHeight: 320 }}>
+              {/* big image area */}
+              <div style={{ position: "relative", flex: 1, display: "grid", placeItems: "center", background: "#0b0b0b" }}>
+                <img
+                  src={lightbox.images[lightbox.index]}
+                  alt={`image ${lightbox.index + 1}`}
+                  style={{ maxWidth: "100%", maxHeight: "76vh", objectFit: "contain", borderRadius: 10 }}
+                  onError={(e) => fallbackImg(e)}
+                />
 
-              {/* Navigation Buttons */}
-              <button
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-white"
-                aria-label="Previous"
-              >
-                <ChevronLeft className="w-6 h-6" style={{ color: bluePrimary }} />
-              </button>
+                {/* left / right */}
+                <button
+                  onClick={prevImage}
+                  aria-label="Previous"
+                  style={{
+                    position: "absolute",
+                    left: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    width: 44,
+                    height: 44,
+                    borderRadius: 999,
+                    background: "white",
+                    border: "none",
+                    display: "grid",
+                    placeItems: "center",
+                    boxShadow: "0 8px 20px rgba(2,6,23,0.12)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <ChevronLeft size={20} style={{ color: COLORS.primary }} />
+                </button>
 
-              <button
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-white"
-                aria-label="Next"
-              >
-                <ChevronRight className="w-6 h-6" style={{ color: bluePrimary }} />
-              </button>
+                <button
+                  onClick={nextImage}
+                  aria-label="Next"
+                  style={{
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    width: 44,
+                    height: 44,
+                    borderRadius: 999,
+                    background: "white",
+                    border: "none",
+                    display: "grid",
+                    placeItems: "center",
+                    boxShadow: "0 8px 20px rgba(2,6,23,0.12)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <ChevronRight size={20} style={{ color: COLORS.primary }} />
+                </button>
+              </div>
+
+              {/* thumbnails column on wide screens (hidden on small) */}
+              <div style={{ width: 160, display: "flex", flexDirection: "column", gap: 8, overflowY: "auto" }}>
+                {lightbox.images.map((src, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setLightbox((s) => ({ ...s, index: i }))}
+                    style={{
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      border: i === lightbox.index ? `2px solid ${COLORS.primary}` : `1px solid ${COLORS.light}`,
+                      padding: 0,
+                      height: 80,
+                      background: "white",
+                      cursor: "pointer",
+                    }}
+                    aria-label={`Open image ${i + 1}`}
+                  >
+                    <img src={src} alt={`thumb ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} onError={fallbackImg} />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

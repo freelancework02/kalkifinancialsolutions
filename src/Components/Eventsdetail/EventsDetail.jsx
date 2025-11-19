@@ -223,7 +223,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
                     <button
                       onClick={joinMeeting}
                       className="rounded-full px-3 py-1.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
-                      style={{ background: gradient, boxShadow: "0 10px 30px rgba(30, 64, 175, 0.12)" }}
+                      style={{ background: "#327BBE", boxShadow: "0 10px 30px rgba(30, 64, 175, 0.12)" }}
                     >
                       Join Meeting
                     </button>
@@ -260,7 +260,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
           <div className="lg:col-span-2 space-y-6">
             <section className="rounded-2xl border border-black/8 bg-white p-5 md:p-6 shadow-sm">
               <header className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ background: gradient }}>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ background: "#327BBE" }}>
                   <FiImage className="text-white" aria-hidden="true" />
                 </div>
                 <div>
@@ -365,7 +365,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
                   <button
                     onClick={joinMeeting}
                     className="w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
-                    style={{ background: gradient }}
+                    style={{ background: "#327BBE" }}
                   >
                     Join Meeting
                   </button>

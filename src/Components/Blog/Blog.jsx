@@ -67,7 +67,7 @@ export default function BlogVariantB() {
           </div>
 
           <h1 className="text-3xl md:text-4xl lg:5xl font-black mb-2 tracking-tight">
-            <span style={{ color: black }}>Blog <span style={{ color: "bluePrimary" }}>& </span>Insights</span>
+            <span style={{ color: "#327BBE" }}>Blog <span style={{ color:  "#327BBE" }}>& </span>Insights</span>
           </h1>
 
           <div className="space-y-4">
@@ -151,8 +151,8 @@ export default function BlogVariantB() {
                       </div>
 
                       <button
-                        className="text-sm font-semibold transition-colors duration-300 hover:underline flex items-center gap-1 group-hover:gap-2"
-                        style={{ color: bluePrimary }}
+                        className="text-sm text-[#327BBE] font-semibold transition-colors duration-300 hover:underline flex items-center gap-1 group-hover:gap-2"
+                        
                       >
                         Read
                         <ArrowRight className="w-3 h-3" />
@@ -179,12 +179,12 @@ export default function BlogVariantB() {
         <div className="text-center mt-16">
           <div className="inline-flex items-center gap-4 px-8 py-4 rounded-2xl bg-white border shadow-lg"
             style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
-            <span className="text-sm font-semibold tracking-widest uppercase" style={{ color: bluePrimary }}>
+            <span className="text-[#327BBE] text-sm font-semibold tracking-widest uppercase" >
               Stay Updated with KALKI
             </span>
             <button
               className="px-6 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg"
-              style={{ backgroundColor: bluePrimary }}
+              style={{ backgroundColor: "#327BBE" }}
             >
               Subscribe
             </button>
