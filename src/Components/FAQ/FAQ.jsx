@@ -1,119 +1,146 @@
-// FoundationalCommitments.TrustGreen.jsx
+// FoundationalCommitments.KalkiBlue.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronRight, Mail, CheckCircle, Shield, Target, Clock } from "lucide-react";
-import faqimg from "../../assets/faqimg.jpg";
+
+// Local assets (use the uploaded files from the conversation)
+import LOGO from "../../assets/logo/logonew.png"
+import FAQ_IMG from "../../assets/faqimg.jpg"
 
 const commitmentsData = [
   {
     title: "Is it possible to engage a financial advisor if I don't have a substantial amount of disposable income?",
-    content: "Yes, everyone can benefit from financial advising. We help you make confident financial decisions — regardless of your income level.",
+    content:
+      "Yes — financial advice scales. We design simple, affordable plans that grow with you. You don't need a large portfolio to get clarity and better outcomes.",
   },
   {
     title: "Can you help make my investments more secure?",
-    content: "We work with you to balance risk and reward, ensuring your investments support your long-term goals.",
+    content:
+      "We structure portfolios to balance risk and return, apply diversification, and set guardrails so your investments align with your horizon and comfort level.",
   },
   {
     title: "Could you please review my portfolio?",
-    content: "Regular portfolio reviews keep your financial direction aligned. We conduct a full Financial Needs Analysis for your entire portfolio.",
+    content:
+      "Absolutely. Our Financial Needs Analysis reviews asset mix, fees, goals, and timelines — then we propose concrete optimizations, not vague suggestions.",
   },
   {
     title: "What kind of kids' education plans do you offer?",
-    content: "We estimate future education costs and recommend personalized financial products to match your family's goals.",
+    content:
+      "We estimate future costs, show funding options (SIPs, recurring deposits, education-specific plans) and map a contribution schedule so the goal stays achievable.",
   },
   {
     title: "Do you provide assistance with life insurance?",
-    content: "Life insurance is essential for long-term family security, asset protection, and estate planning — and we guide you through it all.",
+    content:
+      "Yes. We fit insurance into the broader plan — matching cover, term, and riders to your family's needs so protection isn’t under- or over-sourced.",
   },
 ];
 
-export default function FoundationalCommitmentsTrustGreen() {
-  const [open, setOpen] = useState(null);
-  // Trust-focused green colors
-  const primaryGreen = "#059669";    // Professional green
-  const darkGreen = "#047857";       // Dark green
-  const lightGreen = "#d1fae5";      // Light green
-  const teal = "#0d9488";            // Teal accent
-  const darkGray = "#1f2937";
+// Kalki-blue theme tokens
+const THEME = {
+  accentStart: "#2bb0ff",
+  accentEnd: "#0b63d6",
+  deep: "#042233",
+  text: "#07293a",
+  soft: "rgba(11,99,214,0.08)",
+  glow: "rgba(11,99,214,0.12)",
+};
 
+export default function FoundationalCommitmentsKalkiBlue() {
+  const [open, setOpen] = useState(0); // open first question by default
   const contentRefs = useRef({});
 
+  // Set max-heights for smooth accordion transitions
   useEffect(() => {
     Object.keys(contentRefs.current).forEach((k) => {
       const el = contentRefs.current[k];
       if (!el) return;
       if (Number(k) === open) {
         el.style.maxHeight = el.scrollHeight + "px";
+        el.style.paddingTop = "18px";
+        el.style.paddingBottom = "18px";
       } else {
         el.style.maxHeight = "0px";
+        el.style.paddingTop = "0px";
+        el.style.paddingBottom = "0px";
       }
     });
   }, [open]);
 
   return (
-    <section id="faq" className="py-20 px-6 md:px-12 bg-white">
+    <section id="faq" className="py-20 px-6 md:px-12" style={{ background: `linear-gradient(180deg,#fbfdff 0%, #ffffff 50%)` }}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="flex justify-center items-center gap-4 mb-6">
-            <div className="w-16 h-px bg-emerald-200"></div>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-8 border border-blue-200">
-                <Shield className="w-5 h-5 text-blue-700" />
-                Frequently Asked Questions
-              </span>
+        <div className="text-center mb-12">
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: `#fff`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 36px rgba(15, 15, 16, 0.1)" }}>
+              <img src={LOGO} alt="logo" style={{ width: 28, height: 28, objectFit: "contain" }} />
             </div>
-            <div className="w-16 h-px bg-emerald-200"></div>
+            <div style={{ textAlign: "left" }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: THEME.deep }}>Frequently Asked</div>
+              <div style={{ fontSize: 13, color: "#3a6a76" }}>Questions people ask before they engage</div>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-            {/* Financial Guidance */}
-            <span className="block font-semibold mt-2 text-blue-600">Everything you want to know</span>
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Here’s what people commonly ask before working with us.
+
+          <h2 style={{ fontSize: "2.6rem", margin: "8px 0 10px", fontWeight: 700, color: THEME.deep, lineHeight: 1.02 }}>
+            Everything you want to know
+          </h2>
+          <p style={{ color: "#2f5f67", fontSize: 16, maxWidth: 720, margin: "0 auto" }}>
+            Short, clear answers — so you can decide quickly whether our approach fits your needs.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left Column - FAQ */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Left: Accordion */}
           <div>
-            <div className="space-y-2">
+            <div style={{ display: "grid", gap: 12 }}>
               {commitmentsData.map((item, i) => {
                 const isOpen = open === i;
                 return (
-                  <div
-                    key={i}
-                    className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                  >
+                  <div key={i} style={{ borderRadius: 12, overflow: "hidden", boxShadow: isOpen ? "0 18px 50px rgba(11,99,214,0.08)" : "0 8px 22px rgba(7,34,50,0.04)", border: `1px solid ${isOpen ? THEME.soft : "rgba(10,30,40,0.04)"}`, transition: "box-shadow .28s, transform .22s", transform: isOpen ? "translateY(-4px)" : "none" }}>
                     <button
                       onClick={() => setOpen(isOpen ? null : i)}
-                      className="w-full flex items-center justify-between p-6 text-left group focus:outline-none"
+                      aria-expanded={isOpen}
+                      className="w-full flex items-start justify-between p-5"
+                      style={{ background: isOpen ? "linear-gradient(90deg, rgba(11,99,214,0.03), rgba(11,99,214,0.01))" : "white", cursor: "pointer" }}
                     >
-                      <div className="flex items-start gap-4 flex-1">
-                        <CheckCircle
-                          className={`w-5 h-5 mt-1 flex-shrink-0 transition-colors ${isOpen ? "text-emerald-500" : "text-gray-400 group-hover:text-emerald-400"
-                            }`}
-                        />
-                        <h3 className={`font-medium text-gray-800 transition-colors flex-1 ${isOpen ? "text-gray-900" : "group-hover:text-gray-900"
-                          }`}>
-                          {item.title}
-                        </h3>
+                      <div style={{ display: "flex", gap: 12, alignItems: "flex-start", flex: 1 }}>
+                        <div style={{
+                          minWidth: 44,
+                          minHeight: 44,
+                          borderRadius: 10,
+                          display: "grid",
+                          placeItems: "center",
+                          background: isOpen ? `linear-gradient(135deg, ${THEME.accentStart}, ${THEME.accentEnd})` : "#f1f8ff",
+                          color: isOpen ? "white" : THEME.accentEnd,
+                          boxShadow: isOpen ? "0 8px 30px rgba(11,99,214,0.12)" : "none",
+                        }}>
+                          <CheckCircle size={18} />
+                        </div>
+
+                        <div style={{ textAlign: "left" }}>
+                          <div style={{ fontWeight: 700, color: THEME.text }}>{item.title}</div>
+                          <div style={{ height: 6 }} />
+                          <div style={{ color: "#5f7f85", fontSize: 13, maxWidth: "95%" }}>{/* short preview or empty */}</div>
+                        </div>
                       </div>
-                      <ChevronRight
-                        className={`w-5 h-5 transform transition-transform duration-300 flex-shrink-0 ${isOpen ? "rotate-90 text-emerald-500" : "text-gray-400"
-                          }`}
-                      />
+
+                      <ChevronRight size={20} style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform .28s", color: isOpen ? THEME.accentEnd : "#98a6ad" }} />
                     </button>
 
                     <div
-                      id={`faq-panel-${i}`}
                       ref={(el) => (contentRefs.current[i] = el)}
-                      className="overflow-hidden transition-max-h duration-500 ease-in-out"
-                      style={{ maxHeight: 0 }}
+                      style={{
+                        overflow: "hidden",
+                        maxHeight: 0,
+                        transition: "max-height 420ms cubic-bezier(.2,.9,.2,1), padding 320ms",
+                        background: "white",
+                      }}
                     >
-                      <div className="pb-6 px-6">
-                        <div className="pl-9">
-                          <div className="w-full h-px bg-emerald-100 mb-4"></div>
-                          <p className="text-gray-600 leading-relaxed text-sm">{item.content}</p>
+                      <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+                        <div style={{ height: 1, background: "#eef8ff", marginBottom: 12 }} />
+                        <p style={{ color: "#4f6b6f", lineHeight: 1.6, marginBottom: 12 }}>{item.content}</p>
+                        <div style={{ display: "flex", gap: 14, marginBottom: 8 }}>
+                          {/* <span style={{ fontSize: 13, padding: "6px 10px", borderRadius: 999, background: "#f7fbff", color: THEME.accentEnd, fontWeight: 700 }}>Clarity</span>
+                          <span style={{ fontSize: 13, padding: "6px 10px", borderRadius: 999, background: "#f7fbff", color: THEME.accentEnd, fontWeight: 700 }}>Actionable</span> */}
                         </div>
                       </div>
                     </div>
@@ -122,55 +149,65 @@ export default function FoundationalCommitmentsTrustGreen() {
               })}
             </div>
 
-            {/* Trust Indicators */}
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-blue-50 rounded-lg border border-emerald-100">
-                <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                <div className="font-bold text-gray-900">1,200+</div>
-                <div className="text-sm text-gray-600">Families</div>
+            {/* Trust indicators */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12, marginTop: 18 }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center", padding: 14, borderRadius: 12, background: "linear-gradient(90deg, rgba(11,99,214,0.03), rgba(11,99,214,0.01))", border: `1px solid ${THEME.soft}` }}>
+                <Target size={28} style={{ color: THEME.accentEnd }} />
+                <div>
+                  <div style={{ fontWeight: 800, color: THEME.deep }}>1,200+</div>
+                  <div style={{ color: "#4e7a7f", fontSize: 13 }}>Families</div>
+                </div>
               </div>
-              <div className="text-center p-4 bg-blue-50 rounded-lg border border-teal-100">
-                <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                <div className="font-bold text-gray-900">15+</div>
-                <div className="text-sm text-gray-600">Years Experience</div>
+
+              <div style={{ display: "flex", gap: 12, alignItems: "center", padding: 14, borderRadius: 12, background: "linear-gradient(90deg, rgba(11,99,214,0.03), rgba(11,99,214,0.01))", border: `1px solid ${THEME.soft}` }}>
+                <Clock size={28} style={{ color: THEME.accentEnd }} />
+                <div>
+                  <div style={{ fontWeight: 800, color: THEME.deep }}>15+</div>
+                  <div style={{ color: "#4e7a7f", fontSize: 13 }}>Years Experience</div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Image & Contact */}
-          <div className="space-y-8">
-            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-              <img
-                src={faqimg}
-                alt="Professional financial consultation"
-                className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10"></div>
-
-              {/* Overlay content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/80 to-transparent">
-                <div className="text-white">
-                  <div className="font-semibold text-lg">Your Financial Security</div>
-                  <div className="text-sm text-emerald-200 mt-1">Protected with KALKI Expertise</div>
-                </div>
+          {/* Right: Image + Contact block */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <div style={{ position: "relative", borderRadius: 16, overflow: "hidden", boxShadow: "0 24px 60px rgba(11,99,214,0.08)" }}>
+              <img src={FAQ_IMG} alt="FAQ visual" style={{ width: "100%", height: 420, objectFit: "cover", transform: "scale(1.01)" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(4,34,51,0.14), rgba(4,34,51,0.02))" }} />
+              <div style={{ position: "absolute", left: 20, bottom: 20, color: "white", maxWidth: "74%" }}>
+                <div style={{ fontWeight: 800, fontSize: 20 }}>Your Financial Security</div>
+                <div style={{ marginTop: 6, color: "rgba(255,255,255,0.9)" }}>Protected with KALKI expertise</div>
               </div>
+
+              <div aria-hidden style={{ position: "absolute", right: -40, top: -40, width: 220, height: 220, borderRadius: 999, background: `radial-gradient(circle at 30% 30%, ${THEME.accentStart}, ${THEME.accentEnd}20)`, filter: "blur(28px)", opacity: 0.7 }} />
             </div>
 
-            {/* Contact Card */}
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-8 text-white shadow-lg">
-              <div className="text-center">
-                <Mail className="w-12 h-12 mx-auto mb-4 text-white" />
-                <h3 className="text-xl font-bold mb-2">Ready to Secure Your Future?</h3>
-                <p className="text-emerald-100 mb-4">
-                  Get personalized financial advice from our experts
-                </p>
+            {/* Contact card */}
+            <div style={{ borderRadius: 16, overflow: "hidden", background: `linear-gradient(180deg, ${THEME.accentStart}, ${THEME.accentEnd})`, color: "white", padding: 20, boxShadow: "0 18px 48px rgba(11,99,214,0.12)" }}>
+              <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
+                <div style={{ width: 72, height: 72, borderRadius: 14, background: "rgba(255,255,255,0.12)", display: "grid", placeItems: "center" }}>
+                  <Mail size={32} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 20, fontWeight: 800 }}>Ready to secure your future?</div>
+                  <div style={{ marginTop: 6, color: "rgba(255,255,255,0.9)" }}>Get personalized financial advice from our experts.</div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 16, display: "flex", gap: 12, alignItems: "center" }}>
                 <a
                   href="mailto:Info@futurewesecure.com"
-                  className="inline-flex items-center gap-2 bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
+                  style={{ background: "white", color: THEME.text, padding: "10px 16px", borderRadius: 12, fontWeight: 800, textDecoration: "none", boxShadow: "0 10px 30px rgba(11,99,214,0.08)" }}
                 >
-                  <Mail className="w-4 h-4" />
-                  Contact Us Today
+                  <Mail size={14} style={{ marginRight: 8 }} /> Contact Us Today
                 </a>
+
+                <button
+                  onClick={(e) => { e.preventDefault(); if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) { window.Calendly.initPopupWidget({ url: "https://calendly.com/vmfinsolutions/financialneedanalysis" }); } else { window.open("https://calendly.com/vmfinsolutions/financialneedanalysis", "_blank", "noopener,noreferrer"); } }}
+                  style={{ padding: "10px 14px", borderRadius: 12, fontWeight: 800, border: `2px solid rgba(255,255,255,0.14)`, background: "transparent", color: "white", cursor: "pointer" }}
+                >
+                  Book a quick review
+                </button>
               </div>
             </div>
           </div>
