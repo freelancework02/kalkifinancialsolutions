@@ -15,7 +15,7 @@
 import React from "react";
 
 /* Logo file (local path provided in conversation) */
-import LogoPath from "../../assets/logo/logonew.png"
+import LogoPath from "../../assets/Logo/logonew.png"
 
 /* Keep original images + text unchanged */
 const services = [
