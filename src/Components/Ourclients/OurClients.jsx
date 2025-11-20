@@ -56,7 +56,7 @@ const clients = [
 ];
 
 export default function OurClients() {
-  const bluePrimary = "#1e40af";
+  const bluePrimary = "#327BBE";
   const blueLight = "#dbeafe";
   const blueDark = "#1e3a8a";
   const black = "#0f0f0f";

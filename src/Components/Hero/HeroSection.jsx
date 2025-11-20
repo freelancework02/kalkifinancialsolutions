@@ -112,7 +112,7 @@ export default function HeroAttractive({ topOffset = 72 }) {
                 }}
               >
                 <Calendar className="w-5 h-5" />
-                Book a free 30m consult
+                Book a Call
               </motion.button>
 
               <a
@@ -179,7 +179,7 @@ export default function HeroAttractive({ topOffset = 72 }) {
               }}
             >
               <img
-                src={heroImg}
+                src="https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODJ8fGZpbmFuY2V8ZW58MHx8MHx8fDA%3D"
                 alt="Advisors reviewing plans"
                 className="w-full h-[420px] object-cover object-center bg-white"
                 loading="eager"
@@ -214,7 +214,7 @@ export default function HeroAttractive({ topOffset = 72 }) {
       </div>
 
       {/* bottom gradient */}
-      <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.24))' }} />
+      {/* <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.24))' }} /> */}
     </section>
   );
 }

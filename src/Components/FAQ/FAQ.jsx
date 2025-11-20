@@ -72,8 +72,7 @@ export default function FoundationalCommitmentsKalkiBlue() {
         <div className="text-center mb-12">
           <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
             <div style={{ width: 48, height: 48, borderRadius: 12, background: `#fff`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 36px rgba(15, 15, 16, 0.1)" }}>
-              <img src={LOGO} alt="logo" style={{ width: 28, height: 28, objectFit: "contain" }} />
-            </div>
+            <CheckCircle size={18} />            </div>
             <div style={{ textAlign: "left" }}>
               <div style={{ fontSize: 13, fontWeight: 700, color: THEME.deep }}>Frequently Asked</div>
               <div style={{ fontSize: 13, color: "#3a6a76" }}>Questions people ask before they engage</div>
