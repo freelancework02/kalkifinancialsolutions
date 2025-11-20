@@ -307,7 +307,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
                         </div>
                         <div
                           className="absolute left-2 top-2 px-2 py-0.5 rounded-md text-xs text-white transition-all duration-300"
-                          style={{ background: gradient }}
+                          style={{ background: "#327BBE" }}
                         >
                           #{i + 1}
                         </div>
