@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronRight, Mail, CheckCircle, Shield, Target, Clock } from "lucide-react";
 
 // Local assets (use the uploaded files from the conversation)
-import LOGO from "../../assets/logo/logonew.png"
+import LOGO from "../../assets/Logo/logonew.png"
 import FAQ_IMG from "../../assets/faqimg.jpg"
 
 const commitmentsData = [
