@@ -123,7 +123,7 @@ function hexToRgba(hex, alpha = 1) {
 }
 
 /* Open Calendly helper */
-function openCalendly(url = "https://calendly.com/vmfinsolutions/financialneedanalysis") {
+function openCalendly(url = "https://calendly.com/kalkifinancialsolutions/30min") {
   if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
     window.Calendly.initPopupWidget({ url });
   } else if (typeof window !== "undefined") {

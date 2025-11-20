@@ -62,7 +62,7 @@ const services = [
 ];
 
 /* Small utility: open Calendly (safe fallback to new tab) */
-function openCalendly(url = "https://calendly.com/futurewesecure-info/30min") {
+function openCalendly(url = "https://calendly.com/kalkifinancialsolutions/30min") {
   if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
     window.Calendly.initPopupWidget({ url });
   } else {

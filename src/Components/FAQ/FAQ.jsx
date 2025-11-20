@@ -196,14 +196,14 @@ export default function FoundationalCommitmentsKalkiBlue() {
 
               <div style={{ marginTop: 16, display: "flex", gap: 12, alignItems: "center" }}>
                 <a
-                  href="mailto:Info@futurewesecure.com"
+                  href="mailto:kalkifinancialsolutions@gmail.com"
                   style={{ background: "white", color: THEME.text, padding: "10px 16px", borderRadius: 12, fontWeight: 800, textDecoration: "none", boxShadow: "0 10px 30px rgba(11,99,214,0.08)" }}
                 >
                   <Mail size={14} style={{ marginRight: 8 }} /> Contact Us Today
                 </a>
 
                 <button
-                  onClick={(e) => { e.preventDefault(); if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) { window.Calendly.initPopupWidget({ url: "https://calendly.com/vmfinsolutions/financialneedanalysis" }); } else { window.open("https://calendly.com/vmfinsolutions/financialneedanalysis", "_blank", "noopener,noreferrer"); } }}
+                  onClick={(e) => { e.preventDefault(); if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) { window.Calendly.initPopupWidget({ url: "https://calendly.com/kalkifinancialsolutions/30min" }); } else { window.open("https://calendly.com/kalkifinancialsolutions/30min", "_blank", "noopener,noreferrer"); } }}
                   style={{ padding: "10px 14px", borderRadius: 12, fontWeight: 800, border: `2px solid rgba(255,255,255,0.14)`, background: "transparent", color: "white", cursor: "pointer" }}
                 >
                   Book a quick review

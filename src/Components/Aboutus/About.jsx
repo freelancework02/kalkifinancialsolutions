@@ -158,7 +158,7 @@ export default function AboutUs() {
                       Founder
                     </h2>
                     <h3 className="text-3xl lg:text-4xl font-black" style={{ color: black }}>
-                      Ashish Patel
+                    Sweta Patel
                     </h3>
                     <p className="text-black/60 text-base">(License Number – 21322826)</p>
 

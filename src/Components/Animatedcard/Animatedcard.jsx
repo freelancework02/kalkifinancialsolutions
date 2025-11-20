@@ -114,7 +114,7 @@ export function HomeBlueVariantOne() {
             <div className="flex flex-wrap gap-4">
               <a
                 href="#book"
-                onClick={(e) => { e.preventDefault(); window?.Calendly?.initPopupWidget?.({ url: 'https://calendly.com/vmfinsolutions/financialneedanalysis' }); }}
+                onClick={(e) => { e.preventDefault(); window?.Calendly?.initPopupWidget?.({ url: 'https://calendly.com/kalkifinancialsolutions/30min' }); }}
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1"
                 style={{ background: `linear-gradient(135deg, ${t.accentStart}, ${t.accentEnd})`, color: 'white' }}
               >
@@ -199,7 +199,7 @@ export function HomeBlueVariantOne() {
               <div className="mt-6">
                 <a
                   href="#contact"
-                  onClick={(e) => { e.preventDefault(); window?.Calendly?.initPopupWidget?.({ url: 'https://calendly.com/vmfinsolutions/financialneedanalysis' }); }}
+                  onClick={(e) => { e.preventDefault(); window?.Calendly?.initPopupWidget?.({ url: 'https://calendly.com/kalkifinancialsolutions/30min' }); }}
                   className="block text-center px-4 py-3 rounded-lg font-semibold"
                   style={{ background: `linear-gradient(135deg, ${t.accentStart}, ${t.accentEnd})`, color: 'white' }}
                 >
@@ -285,7 +285,7 @@ export function HomeBlueVariantTwo() {
             <div className="mt-8 flex items-center justify-center gap-4">
               <a
                 href="#book"
-                onClick={(e) => { e.preventDefault(); window?.Calendly?.initPopupWidget?.({ url: 'https://calendly.com/vmfinsolutions/financialneedanalysis' }); }}
+                onClick={(e) => { e.preventDefault(); window?.Calendly?.initPopupWidget?.({ url: 'https://calendly.com/kalkifinancialsolutions/30min' }); }}
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-full font-semibold shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1"
                 style={{ background: `linear-gradient(90deg, ${t.accentStart}, ${t.accentEnd})`, color: 'white' }}
               >

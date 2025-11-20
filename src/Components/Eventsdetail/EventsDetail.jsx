@@ -17,8 +17,8 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
       date: "2025-11-18T17:30:00+05:30",
       description:
         "A comprehensive session covering retirement strategies, tax optimization, and wealth preservation. Learn how to build a secure financial future with expert guidance from KALKI Financial Solutions.",
-      host: "Ashish Patel - KALKI Financial Solutions",
-      meetingLink: "https://calendly.com/futurewesecure-info/30min",
+      host: "Sweta Patel - KALKI Financial Solutions",
+      meetingLink: "https://calendly.com/kalkifinancialsolutions/30min",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1400&auto=format&fit=crop",
       gallery: [

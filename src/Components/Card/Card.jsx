@@ -76,9 +76,9 @@ const BLUE = {
 /* Calendly/open helper */
 function openCalendly() {
   if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-    window.Calendly.initPopupWidget({ url: "https://calendly.com/vmfinsolutions/financialneedanalysis" });
+    window.Calendly.initPopupWidget({ url: "https://calendly.com/kalkifinancialsolutions/30min" });
   } else {
-    window.open("https://calendly.com/vmfinsolutions/financialneedanalysis", "_blank", "noopener,noreferrer");
+    window.open("https://calendly.com/kalkifinancialsolutions/30min", "_blank", "noopener,noreferrer");
   }
 }
 

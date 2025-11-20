@@ -153,7 +153,7 @@ export default function ContactSectionV3_Corporate() {
                 <button
                   onClick={() =>
                     window.Calendly?.initPopupWidget?.({
-                      url: "https://calendly.com/futurewesecure-info/30min",
+                      url: "https://calendly.com/kalkifinancialsolutions/30min",
                     })
                   }
                   className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-semibold"

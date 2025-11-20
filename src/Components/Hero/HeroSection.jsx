@@ -35,7 +35,7 @@ const COLORS = {
   glow: "rgba(59,130,246,0.12)",
 };
 
-const openCalendlyPopup = (url = "https://calendly.com/futurewesecure-info/30min") => {
+const openCalendlyPopup = (url = "https://calendly.com/kalkifinancialsolutions/30min") => {
   try {
     if (window && window.Calendly && window.Calendly.initPopupWidget) {
       window.Calendly.initPopupWidget({ url });
@@ -138,12 +138,12 @@ export default function HeroAttractive({ topOffset = 72 }) {
             <div className="mt-6 flex flex-wrap gap-6 items-center">
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-sky-300" />
-                <a href="mailto:Info@futurewesecure.com" className="text-black font-medium">Info@futurewesecure.com</a>
+                <a href="mailto:kalkifinancialsolutions@gmail.com" className="text-black font-medium">kalkifinancialsolutions@gmail.com</a>
               </div>
 
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-sky-300" />
-                <a href="tel:+15169170756" className="text-black font-medium">516-917-0756</a>
+                <a href="tel:+17737260391" className="text-black font-medium">773-726-0391</a>
               </div>
             </div>
 

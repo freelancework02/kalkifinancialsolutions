@@ -92,7 +92,7 @@ function FinanceSVG({ size = 44, color = BRAND.primary }) {
   );
 }
 
-function openCalendly(url = "https://calendly.com/futurewesecure-info/30min") {
+function openCalendly(url = "https://calendly.com/kalkifinancialsolutions/30min") {
   if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
     window.Calendly.initPopupWidget({ url });
   } else if (typeof window !== "undefined") {
@@ -376,7 +376,7 @@ export default function PartnerProgramEnhanced() {
 
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 900 }}>Ready to Join Our Team?</div>
-              <div style={{ color: BRAND.slateDark, marginTop: 6 }}>Start your journey toward a rewarding career in financial services with comprehensive training and mentorship.</div>
+              <div style={{ color: BRAND.slateDark, marginTop: 6 }}>Start your journey toward a rewarding career with KALKI Financial Solutions through comprehensive training and mentorship.</div>
             </div>
 
             <div style={{ display: "flex", gap: 10 }}>

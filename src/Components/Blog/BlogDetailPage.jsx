@@ -90,7 +90,7 @@ export default function BlogDetailVariantA() {
               <button
                 onClick={() => navigate("/blog")}
                 className="rounded-full px-4 py-2 text-sm font-semibold text-white"
-                style={{ background: "linear-gradient(135deg,#f37021,#d95800)" }}
+                style={{ background: "#327BBE" }}
               >
                 Back to Blogs
               </button>
@@ -144,13 +144,13 @@ export default function BlogDetailVariantA() {
           </div>
 
           {/* CTA block */}
-          <div className="mt-12 rounded-2xl p-8 bg-gradient-to-r from-white via-[#fff8f1] to-white border border-black/6 shadow-sm text-center">
+          <div className="mt-12 rounded-2xl p-8 bg-gradient-to-r from-white via-[#ddeeffff] to-white border border-black/6 shadow-sm text-center">
             <h3 className="text-2xl font-bold text-black mb-3">Ready to explore more insights?</h3>
             <p className="text-slate-600 mb-6">Discover expert-driven perspectives and financial wisdom in our growing blog collection.</p>
             <button
               onClick={() => navigate("/blog")}
               className="rounded-full px-6 py-3 text-sm font-semibold text-white"
-              style={{ background: "linear-gradient(135deg,#f37021,#d95800)" }}
+              style={{ background: "#327BBE" }}
             >
               Browse All Blogs
             </button>

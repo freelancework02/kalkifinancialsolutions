@@ -121,9 +121,9 @@ export default function ServiceCardKalki() {
             <button
               onClick={() => {
                 if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                  window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
+                  window.Calendly.initPopupWidget({ url: "https://calendly.com/kalkifinancialsolutions/30min" });
                 } else {
-                  window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
+                  window.open("https://calendly.com/kalkifinancialsolutions/30min", "_blank", "noopener,noreferrer");
                 }
               }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1"
@@ -236,9 +236,9 @@ export default function ServiceCardKalki() {
                     {/* <button
                       onClick={() => {
                         if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                          window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
+                          window.Calendly.initPopupWidget({ url: "https://calendly.com/kalkifinancialsolutions/30min" });
                         } else {
-                          window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
+                          window.open("https://calendly.com/kalkifinancialsolutions/30min", "_blank", "noopener,noreferrer");
                         }
                       }}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white transition-transform transform hover:-translate-y-0.5"
@@ -279,9 +279,9 @@ export default function ServiceCardKalki() {
                     <button
                       onClick={() => {
                         if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
-                          window.Calendly.initPopupWidget({ url: "https://calendly.com/futurewesecure-info/30min" });
+                          window.Calendly.initPopupWidget({ url: "https://calendly.com/kalkifinancialsolutions/30min" });
                         } else {
-                          window.open("https://calendly.com/futurewesecure-info/30min", "_blank", "noopener,noreferrer");
+                          window.open("https://calendly.com/kalkifinancialsolutions/30min", "_blank", "noopener,noreferrer");
                         }
                       }}
                       className="px-4 py-2 rounded-full font-semibold"
