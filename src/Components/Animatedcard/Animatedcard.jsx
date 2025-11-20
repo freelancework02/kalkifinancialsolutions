@@ -20,7 +20,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import logo from "../../assets/logo/logonew.png"
+import logo from "../../assets/Logo/logonew.png"
 
 const Logo = logo // local logo path (provided file)
 

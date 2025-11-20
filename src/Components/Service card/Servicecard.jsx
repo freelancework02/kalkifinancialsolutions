@@ -2,8 +2,8 @@
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { ArrowRight } from "lucide-react";
-import LOGO_PATH from "../../assets/logo/whitetextlogo.png"
-import logo2 from "../../assets/logo/logo_white_bg.png"
+import LOGO_PATH from "../../assets/Logo/whitetextlogo.png"
+import logo2 from "../../assets/Logo/logo_white_bg.png"
 
 // Brand palette (extracted from your Kalki logo)
 const BRAND = {
