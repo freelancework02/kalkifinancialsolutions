@@ -126,6 +126,7 @@ export default function ContactSectionV3_Corporate() {
               <ContactRow
                 icon={<Phone />}
                 title="773-726-0391"
+                title2="773-595-6232"
                 subtitle="Direct line"
                 color={BRAND.primary}
               />
@@ -138,7 +139,7 @@ export default function ContactSectionV3_Corporate() {
 
               <div className="mt-8 space-y-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=15165818909&text=Hello!"
+                  href="https://api.whatsapp.com/send?phone=17737260391&text=Hello!"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-semibold"
@@ -264,7 +265,7 @@ export default function ContactSectionV3_Corporate() {
 }
 
 /*— SMALL SUBCOMPONENTS —*/
-function ContactRow({ icon, title, subtitle, color }) {
+function ContactRow({ icon, title, title2, subtitle, color }) {
   return (
     <div className="flex items-center gap-4 p-4 rounded-xl">
       <div
@@ -275,6 +276,7 @@ function ContactRow({ icon, title, subtitle, color }) {
       </div>
       <div>
         <div className="font-semibold">{title}</div>
+        <div className="font-semibold">{title2}</div>
         <div className="text-sm text-gray-500">{subtitle}</div>
       </div>
     </div>
