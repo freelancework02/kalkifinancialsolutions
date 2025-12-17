@@ -1,30 +1,9 @@
-// EventsGalleryVariantBEnhanced.jsx
+// EventsGalleryVariantB.jsx
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import {
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Calendar,
-  Users,
-  MapPin,
-} from "lucide-react";
-
-/* --------------------- Firebase (unchanged) --------------------- */
-const firebaseConfig = {
-  apiKey: "AIzaSyBg2p1nPZQ39AU91CDzRWeYtQjBs5HHf-Y",
-  authDomain: "ajazgraphic-da740.firebaseapp.com",
-  projectId: "ajazgraphic-da740",
-  storageBucket: "ajazgraphic-da740.appspot.com",
-  messagingSenderId: "600209988666",
-  appId: "1:600209988666:web:d806f6d7dfd10fa394a903",
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import { ChevronLeft, ChevronRight, X, Calendar, Users, MapPin } from "lucide-react";
 
 /* --------------------- Branding & assets --------------------- */
-const LOGO_PATH = "/mnt/data/logonew.png"; // developer-provided local logo image
+const LOGO_PATH = "/mnt/data/logonew.png"; // keep your local logo path
 
 const COLORS = {
   primary: "#1e40af",
@@ -35,7 +14,7 @@ const COLORS = {
 
 /* --------------------- Component --------------------- */
 export default function EventsGalleryVariantB() {
-  const [eventsData, setEventsData] = useState([]);
+  const [eventsData, setEventsData] = useState([]); // each event: { id, title, description, is_published, cover_image_id, created_at, images: [url,...], imagesMeta: [...] }
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
@@ -50,24 +29,49 @@ export default function EventsGalleryVariantB() {
   const [visibleIds, setVisibleIds] = useState(new Set());
   const observerRef = useRef(null);
 
-  // fetch events
+  // fetch galleries list from your localhost API and then fetch each gallery's images
   useEffect(() => {
     let cancelled = false;
-    const fetchEvents = async () => {
+    const fetchGalleries = async () => {
+      setLoading(true);
+      setErr("");
       try {
-        const qs = await getDocs(collection(db, "properedgefinance"));
-        const events = qs.docs.map((doc) => ({
-          id: Number.isNaN(parseInt(doc.id, 10)) ? doc.id : parseInt(doc.id, 10),
-          ...doc.data(),
-        }));
-        // stable sort by numeric id if available
-        events.sort((a, b) => {
-          const an = typeof a.id === "number";
-          const bn = typeof b.id === "number";
-          if (an && bn) return a.id - b.id;
-          return String(a.id).localeCompare(String(b.id));
+        // adjust query params (page/per) as needed
+        const listRes = await fetch(`https://www.kalkifinancialsolutions.com/api/galleries?page=1&per=12`);
+        if (!listRes.ok) throw new Error(`List request failed: ${listRes.status}`);
+        const listJson = await listRes.json();
+        const rows = Array.isArray(listJson.data) ? listJson.data : [];
+
+        // for each gallery fetch detailed images list
+        const detailsPromises = rows.map(async (g) => {
+          try {
+            const r = await fetch(`https://www.kalkifinancialsolutions.com/api/galleries/${g.id}`);
+            if (!r.ok) return { ...g, images: [], imagesMeta: [] };
+            const json = await r.json();
+            const imagesMeta = Array.isArray(json.images) ? json.images : [];
+            // build public URLs for images using your blob endpoint
+            const images = imagesMeta.map((im) => `https://www.kalkifinancialsolutions.com/api/galleries/image/${im.id}/blob`);
+            // choose hero based on cover_image_id or first image
+            let hero = "";
+            if (g.cover_image_id) {
+              const matched = imagesMeta.find((m) => m.id === Number(g.cover_image_id));
+              if (matched) hero = `https://www.kalkifinancialsolutions.com/api/galleries/image/${matched.id}/blob`;
+            }
+            if (!hero && images.length) hero = images[0];
+            return { ...g, images, imagesMeta, hero };
+          } catch (e) {
+            console.error("gallery detail fetch error", e);
+            return { ...g, images: [], imagesMeta: [], hero: "" };
+          }
         });
-        if (!cancelled) setEventsData(events);
+
+        const detailed = await Promise.all(detailsPromises);
+
+        if (!cancelled) {
+          // sort by created_at desc to match previous behaviour
+          detailed.sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
+          setEventsData(detailed);
+        }
       } catch (e) {
         console.error(e);
         if (!cancelled) setErr("Couldn't load the gallery. Please try again later.");
@@ -75,7 +79,8 @@ export default function EventsGalleryVariantB() {
         if (!cancelled) setLoading(false);
       }
     };
-    fetchEvents();
+
+    fetchGalleries();
     return () => {
       cancelled = true;
     };
@@ -147,6 +152,7 @@ export default function EventsGalleryVariantB() {
 
   // choose hero image for event
   function heroImageForEvent(e) {
+    if (e.hero) return e.hero;
     if (Array.isArray(e.images) && e.images.length) return e.images[0];
     if (e.thumbnail) return e.thumbnail;
     if (e.image) return e.image;
@@ -154,9 +160,9 @@ export default function EventsGalleryVariantB() {
   }
 
   /* small helpers */
-  const fallbackImg = (e) => {
-    e.target.onerror = null;
-    e.target.src =
+  const fallbackImg = (ev) => {
+    ev.target.onerror = null;
+    ev.target.src =
       "data:image/svg+xml;utf8," +
       encodeURIComponent(
         `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><rect width='100%' height='100%' fill='${COLORS.light}'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='${COLORS.primary}' font-family='Arial' font-size='28'>Image unavailable</text></svg>`
@@ -280,7 +286,7 @@ export default function EventsGalleryVariantB() {
                         <h4 style={{ margin: 0, fontWeight: 800 }}>Event Details</h4>
                         <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
                           <div style={{ display: "flex", gap: 8, alignItems: "center", color: COLORS.mutedText }}>
-                            <Calendar size={16} style={{ color: COLORS.primary }} /> <span>{ev.date || "Date TBA"}</span>
+                            <Calendar size={16} style={{ color: COLORS.primary }} /> <span>{ev.created_at ? new Date(ev.created_at).toLocaleDateString() : "Date TBA"}</span>
                           </div>
                           <div style={{ display: "flex", gap: 8, alignItems: "center", color: COLORS.mutedText }}>
                             <MapPin size={16} style={{ color: COLORS.primary }} /> <span>{ev.location || "Location TBA"}</span>

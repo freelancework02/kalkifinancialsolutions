@@ -1,109 +1,73 @@
+// EventsDetailVariantA.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   FiCalendar,
   FiUser,
-  FiExternalLink,
-  FiVideo,
   FiImage,
   FiX,
   FiChevronLeft,
   FiChevronRight,
 } from "react-icons/fi";
+import { useParams } from "react-router-dom";
 
-export default function EventsDetailVariantA({ event = {}, previousEvents = [] }) {
-  const demoCurrent = useMemo(
-    () => ({
-      title: "Retirement Planning Masterclass: Secure Your Financial Future",
-      date: "2025-11-18T17:30:00+05:30",
-      description:
-        "A comprehensive session covering retirement strategies, tax optimization, and wealth preservation. Learn how to build a secure financial future with expert guidance from KALKI Financial Solutions.",
-      host: "Sweta Patel - KALKI Financial Solutions",
-      meetingLink: "https://calendly.com/kalkifinancialsolutions/30min",
-      thumbnailUrl:
-        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1400&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1487014679447-9f8336841d58?q=80&w=1400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1529336953121-a9d1b95a0df1?q=80&w=1400&auto=format&fit=crop",
-      ],
-    }),
-    []
-  );
+/**
+ * EventsDetailVariantA (API-backed)
+ *
+ * - Props:
+ *    - event (optional): if provided, component uses it directly
+ *    - previousEvents (optional): if provided, will be used instead of fetching archived events
+ *
+ * - Behavior:
+ *    - If no event prop, reads :id from route and fetches GET /api/events/:id
+ *    - If no :id, fetches first active event with GET /api/events?page=1&per=1
+ *    - Fetches previous events from GET /api/events/previous (unless previousEvents prop provided)
+ *    - Builds image URLs from images metadata using /api/events/image/:imageId/blob
+ *
+ * - Update API_BASE if your backend runs elsewhere.
+ */
 
-  const demoPrevious = useMemo(
-    () => [
-      {
-        id: 101,
-        title: "Investment Strategies for Market Volatility",
-        date: "2025-10-22T18:00:00+05:30",
-        host: "KALKI Financial Solutions",
-        thumbnailUrl:
-          "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&auto=format&fit=crop",
-        recordingLink: "https://example.com/recording/investment-strategies",
-      },
-      {
-        id: 102,
-        title: "Estate Planning & Wealth Transfer",
-        date: "2025-09-10T17:00:00+05:30",
-        host: "KALKI Financial Solutions",
-        thumbnailUrl:
-          "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop",
-        recordingLink: "https://example.com/recording/estate-planning",
-      },
-    ],
-    []
-  );
+// process.env.REACT_APP_API_BASE || 
 
-  const model = { ...demoCurrent, ...event };
-  const prevList = Array.isArray(previousEvents) && previousEvents.length ? previousEvents : demoPrevious;
+const API_BASE = "https://www.kalkifinancialsolutions.com";
 
-  const displayDate = useMemo(() => formatDate(model.date), [model.date]);
+export default function EventsDetailVariantA({ event: eventProp = null, previousEvents: prevProp = null }) {
+  const { id: routeId } = useParams();
 
-  // KALKI Financial Solutions brand colors
-  const bluePrimary = "#1e40af";
-  const blueDark = "#1e3a8a";
-  const blueLight = "#dbeafe";
-  const gradient = `linear-gradient(135deg, ${bluePrimary}, ${blueDark})`;
+  // model holds the active event object from API (fields from events table)
+  const [model, setModel] = useState(eventProp || null);
+  const [images, setImages] = useState([]); // array of image URLs
+  const [prevList, setPrevList] = useState(Array.isArray(prevProp) ? prevProp : null);
+  const [loading, setLoading] = useState(!eventProp); // if eventProp given, no initial loading for main event
+  const [loadingPrev, setLoadingPrev] = useState(prevProp ? false : true);
 
-  // lightbox
+  // lightbox state
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
-  const images = model.gallery || [];
-  const hasGallery = images && images.length > 0;
   const lightboxRef = useRef(null);
   const heroRef = useRef(null);
 
-  // dynamic top offset to clear navbar
+  // dynamic top offset for hero to clear navbar (same behavior as before)
   const [topOffset, setTopOffset] = useState(null);
-
-  // measure navbar (id="site-navbar" or data-fixed-navbar="true") and set padding
   useEffect(() => {
     function computeOffset() {
-      const defaultMobile = 64; // px
-      const defaultDesktop = 96; // px
-
+      const defaultMobile = 64;
+      const defaultDesktop = 96;
       const byId = document.getElementById("site-navbar");
       const byAttr = document.querySelector("[data-fixed-navbar='true']");
       const navbarEl = byId || byAttr;
-
       if (navbarEl) {
         const rect = navbarEl.getBoundingClientRect();
-        // treat it as fixed/sticky if positioned at/near top or style says fixed/sticky
         const style = window.getComputedStyle(navbarEl);
         const isAtTop = Math.abs(rect.top) < 4 || style.position === "fixed" || style.position === "sticky";
         if (isAtTop) {
           const height = Math.ceil(rect.height);
-          setTopOffset(height + 12); // breathing space
+          setTopOffset(height + 12);
           return;
         }
       }
-
       const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
       setTopOffset(vw < 768 ? defaultMobile : defaultDesktop);
     }
-
     computeOffset();
     let t = null;
     const onResize = () => {
@@ -119,7 +83,130 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
     };
   }, []);
 
-  // open lightbox
+  // helper: build image URL from image metadata id
+  const imageUrlFromMeta = (m) => `${API_BASE}/api/events/image/${m.id}/blob`;
+
+  // fetch previous events (archived)
+  useEffect(() => {
+    if (Array.isArray(prevProp)) {
+      setPrevList(prevProp);
+      setLoadingPrev(false);
+      return;
+    }
+
+    let cancelled = false;
+    const loadPrev = async () => {
+      setLoadingPrev(true);
+      try {
+        const res = await fetch(`${API_BASE}/api/events/previous`);
+        if (!res.ok) {
+          console.error("Failed to load previous events", res.status);
+          if (!cancelled) setPrevList([]);
+          return;
+        }
+        const json = await res.json();
+        const data = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
+        if (!cancelled) setPrevList(data);
+      } catch (err) {
+        console.error("previous events fetch error", err);
+        if (!cancelled) setPrevList([]);
+      } finally {
+        if (!cancelled) setLoadingPrev(false);
+      }
+    };
+    loadPrev();
+    return () => { cancelled = true; };
+  }, [prevProp]);
+
+  // fetch active event if needed
+  useEffect(() => {
+    if (eventProp) {
+      // if prop is provided, normalize images
+      (async () => {
+        setModel(eventProp);
+        // prefer images in eventProp.images (if present), otherwise empty
+        if (Array.isArray(eventProp.images) && eventProp.images.length) {
+          setImages(eventProp.images.map((m) => (m.id ? imageUrlFromMeta(m) : m)));
+        } else {
+          // if cover_image_id exists but no images metadata provided, fetch details to get images
+          if (eventProp.cover_image_id && eventProp.id) {
+            try {
+              const r = await fetch(`${API_BASE}/api/events/${eventProp.id}`);
+              if (r.ok) {
+                const j = await r.json();
+                const imgs = Array.isArray(j.images) ? j.images : [];
+                setImages(imgs.map(imageUrlFromMeta));
+              } else {
+                setImages([]);
+              }
+            } catch {
+              setImages([]);
+            }
+          } else {
+            setImages([]);
+          }
+        }
+      })();
+      return;
+    }
+
+    // if no event prop, fetch by routeId or fallback to first active event
+    let cancelled = false;
+    const loadEvent = async () => {
+      setLoading(true);
+      try {
+        let res, json;
+        if (routeId) {
+          res = await fetch(`${API_BASE}/api/events/${encodeURIComponent(routeId)}`);
+          if (!res.ok) {
+            // fallback: try to load first active event
+            console.warn(`Event ${routeId} not found, fetching first active event`);
+            const list = await fetch(`${API_BASE}/api/events?page=1&per=1`);
+            if (!list.ok) throw new Error("No active events");
+            const listJson = await list.json();
+            const first = Array.isArray(listJson.data) && listJson.data.length ? listJson.data[0] : null;
+            if (!first) throw new Error("No active events");
+            // fetch details for that first
+            res = await fetch(`${API_BASE}/api/events/${first.id}`);
+            if (!res.ok) throw new Error("Failed to fetch event details");
+            json = await res.json();
+          } else {
+            json = await res.json();
+          }
+        } else {
+          // no route id: fetch first active event
+          const list = await fetch(`${API_BASE}/api/events?page=1&per=1`);
+          if (!list.ok) throw new Error("No active events");
+          const listJson = await list.json();
+          const first = Array.isArray(listJson.data) && listJson.data.length ? listJson.data[0] : null;
+          if (!first) throw new Error("No active events");
+          res = await fetch(`${API_BASE}/api/events/${first.id}`);
+          if (!res.ok) throw new Error("Failed to fetch event details");
+          json = await res.json();
+        }
+
+        if (cancelled) return;
+        // API returns { event, images }
+        const ev = json.event || json;
+        const imgsMeta = Array.isArray(json.images) ? json.images : [];
+        setModel(ev);
+        setImages(imgsMeta.map(imageUrlFromMeta));
+      } catch (err) {
+        console.error("load event error", err);
+        if (!cancelled) {
+          setModel(null);
+          setImages([]);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    loadEvent();
+    return () => { cancelled = true; };
+  }, [eventProp, routeId]);
+
+  // lightbox handlers
   const openAt = (i) => {
     if (!Array.isArray(images) || images.length === 0) return;
     setIdx(i);
@@ -129,7 +216,6 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
   const next = () => setIdx((p) => (p + 1) % images.length);
   const prev = () => setIdx((p) => (p - 1 + images.length) % images.length);
 
-  // keyboard nav
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") setOpen(false);
@@ -141,7 +227,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
     return () => window.removeEventListener("keydown", onKey);
   }, [open, images.length]);
 
-  // small parallax effect
+  // parallax for hero
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
@@ -156,19 +242,51 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // join meeting
   const joinMeeting = () => {
-    if (!model.meetingLink) return;
-    window.open(model.meetingLink, "_blank", "noopener,noreferrer");
+    if (!model?.link && !model?.meetingLink) return;
+    const url = model.meetingLink || model.link;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  // safeTop: while measuring, provide a safe default so UI doesn't overlap
+  // derived
+  const displayDate = useMemo(() => formatDate(model?.event_date || model?.date || model?.created_at), [model]);
+  const hasGallery = images && images.length > 0;
   const safeTop = topOffset ?? 64;
+  const bluePrimary = "#1e40af";
+  const blueLight = "#dbeafe";
+
+  // render loading / not found states
+  if (loading) {
+    return (
+      <section style={{ paddingTop: `${safeTop}px` }}>
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-12">
+          <div className="h-64 bg-gray-100 rounded-2xl animate-pulse" />
+          <div className="mt-6 space-y-3">
+            <div className="h-6 w-1/3 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
+            <div className="h-3 w-full bg-gray-100 rounded animate-pulse" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!model) {
+    return (
+      <section style={{ paddingTop: `${safeTop}px` }}>
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 text-center">
+          <h2 className="text-xl font-semibold mb-3">Active event not found</h2>
+          <p className="text-sm text-black/60">There is no active event to display right now.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
       className="w-full mb-8"
       style={{
-        // apply padding at top equal to navbar height + gap so hero & floating card are below navbar
         paddingTop: `${safeTop}px`,
       }}
     >
@@ -178,14 +296,27 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
         className="relative h-64 md:h-[44vw] max-h-[560px] w-full overflow-hidden rounded-2xl"
         aria-hidden="false"
       >
+        {/* hero uses cover image (first image / cover_image_id if present) */}
         <img
-          src={model.thumbnailUrl}
+          src={(() => {
+            // try cover image first
+            if (model.cover_image_id) {
+              // find matching loaded image URL
+              const found = images.find((u) => u.includes(`/api/events/image/${model.cover_image_id}/blob`));
+              if (found) return found;
+              // otherwise try to build url
+              return `${API_BASE}/api/events/image/${model.cover_image_id}/blob`;
+            }
+            if (images.length) return images[0];
+            // fallback: if model.thumbnailUrl exists (older prop) use it
+            if (model.thumbnailUrl) return model.thumbnailUrl;
+            return `${API_BASE}/assets/default-event-hero.jpg`; // optional fallback path
+          })()}
           alt={model.title || "Event hero"}
           className="w-full h-full object-cover transition-transform duration-700 will-change-transform"
           loading="lazy"
         />
 
-        {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute left-0 top-0 h-full w-1/6 bg-gradient-to-r from-black/10 to-transparent" />
@@ -206,11 +337,15 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
                 >
                   <FiCalendar aria-hidden="true" />
                   <span className="text-white text-xs">{displayDate}</span>
+                  <span className="text-white/70">
+  ({model.event_timezone})
+</span>
+
                 </div>
 
                 <h1 className="mt-2 text-base md:text-lg font-extrabold text-white truncate">{model.title}</h1>
 
-                <p className="mt-1 text-sm text-white line-clamp-2">{model.host}</p>
+                <p className="mt-1 text-sm text-white line-clamp-2">{model.hosted_by || model.host || model.hostName}</p>
 
                 <p className="mt-2 text-xs text-white">
                   <strong>Format:</strong> Live session · Q&A · Slides available
@@ -219,7 +354,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
 
               <div className="flex flex-col items-end gap-2">
                 <div className="flex flex-col gap-2">
-                  {model.meetingLink ? (
+                  {model.link || model.meetingLink ? (
                     <button
                       onClick={joinMeeting}
                       className="rounded-full px-3 py-1.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
@@ -293,7 +428,7 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
                         key={i}
                         onClick={() => openAt(i)}
                         className="group relative overflow-hidden rounded-xl border border-black/6 focus:outline-none focus-visible:ring-4 transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                        style={{ borderColor: "rgba(30, 64, 175, 0.2)", focusVisibleRingColor: blueLight }}
+                        style={{ borderColor: "rgba(30, 64, 175, 0.2)" }}
                         aria-label={`Open image ${i + 1}`}
                         title="Open image"
                       >
@@ -346,22 +481,25 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
                   <div>
                     <div className="font-medium text-black">Date & time</div>
                     <div>{displayDate}</div>
+                    <span className="text-black/70">
+  ({model.event_timezone})
+</span>
                   </div>
                 </li>
 
-                {model.host && (
+                {model.hosted_by && (
                   <li className="flex items-start gap-3">
                     <FiUser className="mt-0.5" style={{ color: bluePrimary }} />
                     <div>
                       <div className="font-medium text-black">Hosted by</div>
-                      <div>{model.host}</div>
+                      <div>{model.hosted_by}</div>
                     </div>
                   </li>
                 )}
               </ul>
 
               <div className="mt-3">
-                {model.meetingLink ? (
+                {model.link || model.meetingLink ? (
                   <button
                     onClick={joinMeeting}
                     className="w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
@@ -383,17 +521,28 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
 
             <div className="mt-4 rounded-2xl border border-black/8 bg-white p-3 shadow-sm" style={{ borderColor: "rgba(30, 64, 175, 0.1)" }}>
               <h5 className="text-sm font-semibold text-black/80 mb-2">Previous events</h5>
-              <div className="space-y-3">
-                {prevList.slice(0, 3).map((p) => (
-                  <div key={p.id || p.title} className="flex items-center gap-3 p-2 rounded-lg transition-all duration-300 hover:bg-blue-50 cursor-pointer" onClick={() => window.open(p.recordingLink, '_blank')}>
-                    <img src={p.thumbnailUrl} alt={p.title} className="w-14 h-10 object-cover rounded-md" />
-                    <div>
-                      <div className="text-sm font-medium text-black">{p.title}</div>
-                      <div className="text-xs text-black/60">{formatDate(p.date)}</div>
+
+              {!loadingPrev && Array.isArray(prevList) && prevList.length === 0 && (
+                <div className="text-sm text-black/60">previous events are not visible</div>
+              )}
+
+              {!loadingPrev && Array.isArray(prevList) && prevList.length > 0 && (
+                <div className="space-y-3">
+                  {prevList.slice(0, 3).map((p) => (
+                    <div key={p.id || p.title} className="flex items-center gap-3 p-2 rounded-lg transition-all duration-300 hover:bg-blue-50 cursor-pointer" onClick={() => window.location.assign(`/events/${p.id}`)}>
+                      <img src={(p.cover_image_id ? `${API_BASE}/api/events/image/${p.cover_image_id}/blob` : (p.thumbnailUrl || `${API_BASE}/assets/default-event-thumb.jpg`))} alt={p.title} className="w-14 h-10 object-cover rounded-md" />
+                      <div>
+                        <div className="text-sm font-medium text-black">{p.title}</div>
+                        <div className="text-xs text-black/60">{formatDate(p.event_date || p.date || p.created_at)}</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
+
+              {loadingPrev && (
+                <div className="text-sm text-black/60">Loading previous events…</div>
+              )}
             </div>
           </aside>
         </div>
@@ -416,53 +565,38 @@ export default function EventsDetailVariantA({ event = {}, previousEvents = [] }
           >
             <img src={images[idx]} alt={`Preview ${idx + 1}`} className="w-full max-h-[78vh] object-contain rounded-md shadow-lg" loading="eager" />
 
-            {/* Top left caption */}
             <div className="absolute left-4 top-4 rounded-md px-3 py-1 text-sm text-white" style={{ background: "rgba(0,0,0,0.35)" }}>
               {model.title}
             </div>
 
-            {/* Close */}
             <button
               onClick={() => setOpen(false)}
               className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full p-2 bg-white/10 text-white focus:outline-none focus:ring-2 transition-all duration-300 hover:bg-white/20 hover:scale-110"
-              style={{ focusRingColor: blueLight }}
               aria-label="Close preview"
             >
               <FiX />
             </button>
 
-            {/* Prev / Next */}
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                prev();
-              }}
+              onClick={(e) => { e.stopPropagation(); prev(); }}
               aria-label="Previous image"
               className="absolute left-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-full p-3 bg-white/10 text-white focus:outline-none focus:ring-2 transition-all duration-300 hover:bg-white/20 hover:scale-110"
-              style={{ focusRingColor: blueLight }}
             >
               <FiChevronLeft size={20} />
             </button>
 
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                next();
-              }}
+              onClick={(e) => { e.stopPropagation(); next(); }}
               aria-label="Next image"
               className="absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-full p-3 bg-white/10 text-white focus:outline-none focus:ring-2 transition-all duration-300 hover:bg-white/20 hover:scale-110"
-              style={{ focusRingColor: blueLight }}
             >
               <FiChevronRight size={20} />
             </button>
 
-            {/* Footer controls */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-black/40 rounded-full px-3 py-1.5 backdrop-blur-sm">
               <span className="text-xs text-white/90">{idx + 1} / {images.length}</span>
               <button
-                onClick={() => {
-                  window.open(images[idx], "_blank", "noopener,noreferrer");
-                }}
+                onClick={() => { window.open(images[idx], "_blank", "noopener,noreferrer"); }}
                 className="text-xs text-white/90 underline transition-all duration-300 hover:text-white"
               >
                 Open original
